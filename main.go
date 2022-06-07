@@ -16,7 +16,7 @@ func main() {
 }
 
 func initConfig() {
-	global.ServerConfig = &config.ServerConfig{MysqlConfigInfo: config.MysqlConfig{
+	global.ServerConfig = &config.Server{MysqlConfig: config.Mysql{
 		Host:     "127.0.0.1",
 		Port:     3306,
 		DbName:   "go-admin",

@@ -7,6 +7,6 @@ import (
 )
 
 var (
-	ServerConfig = &config.ServerConfig{}
+	ServerConfig = &config.Server{}
 	DB           *gorm.DB
 )
