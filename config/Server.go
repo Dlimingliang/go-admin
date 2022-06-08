@@ -1,5 +1,5 @@
 package config
 
 type Server struct {
-	MysqlConfig Mysql `yaml:"mysql"`
+	MysqlConfig Mysql `mapstructure:"mysql"`
 }

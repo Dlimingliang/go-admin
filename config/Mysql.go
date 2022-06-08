@@ -3,13 +3,13 @@ package config
 import "fmt"
 
 type Mysql struct {
-	Host     string `yaml:"host"`
-	Port     int    `yaml:"port"`
-	DbName   string `yaml:"db-name"`
-	Config   string `yaml:"config"`
-	User     string `yaml:"user"`
-	Password string `yaml:"password"`
-	LogMode  string `yaml:"log-mode"`
+	Host     string `mapstructure:"host"`
+	Port     int    `mapstructure:"port"`
+	DbName   string `mapstructure:"db-name"`
+	Config   string `mapstructure:"config"`
+	User     string `mapstructure:"user"`
+	Password string `mapstructure:"password"`
+	LogMode  string `mapstructure:"log-mode"`
 }
 
 func (mysqlConfig *Mysql) Dsn() string {

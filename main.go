@@ -3,27 +3,15 @@ package main
 import (
 	"fmt"
 
-	"github.com/Dlimingliang/go-admin/config"
 	"github.com/Dlimingliang/go-admin/global"
 	"github.com/Dlimingliang/go-admin/initialize"
 )
 
 func main() {
-	initConfig()
+	initialize.InitViper()
 	//初始化数据库
 	initialize.InitGorm()
 	testGorm()
-}
-
-func initConfig() {
-	global.ServerConfig = &config.Server{MysqlConfig: config.Mysql{
-		Host:     "127.0.0.1",
-		Port:     3306,
-		DbName:   "go-admin",
-		Config:   "charset=utf8mb4&parseTime=True&loc=Local",
-		User:     "root",
-		Password: "123456!",
-	}}
 }
 
 type Test struct {
