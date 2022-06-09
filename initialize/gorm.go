@@ -13,11 +13,14 @@ import (
 	"github.com/Dlimingliang/go-admin/global"
 )
 
+/**
+gorm
+1. 数据库连接及配置
+2. gorm日志配置
+3. gorm连接池配置
+*/
+
 func InitGorm() {
-	//主要配置点
-	//1. 连接及数据库配置
-	//2. 连接池配置
-	//3. 日志配置
 
 	//数据库配置
 	mysqlConfigInfo := global.ServerConfig.MysqlConfig
