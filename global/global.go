@@ -1,6 +1,7 @@
 package global
 
 import (
+	"go.uber.org/zap"
 	"gorm.io/gorm"
 
 	"github.com/Dlimingliang/go-admin/config"
@@ -8,5 +9,6 @@ import (
 
 var (
 	ServerConfig = &config.Server{}
-	DB           *gorm.DB
+	GaDb         *gorm.DB
+	GaLog        *zap.Logger
 )

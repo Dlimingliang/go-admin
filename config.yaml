@@ -4,4 +4,12 @@ mysql:
   db-name: go-admin
   user: root
   password: 123456!
-  log-mode: aaa
+  log-mode: info
+
+zap:
+  level: info
+  prefix: '[github.com/Dlimingliang/go-admin]'
+  format: console
+  director: log
+  encode-level: LowercaseColorLevelEncoder
+  stacktrace-key: stacktrace

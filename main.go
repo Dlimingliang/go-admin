@@ -9,6 +9,8 @@ import (
 
 func main() {
 	initialize.InitViper()
+	initialize.InitZap()
+	global.GaLog.Info("zap 打印日志测试")
 	//初始化数据库
 	initialize.InitGorm()
 	testGorm()
@@ -21,6 +23,6 @@ type Test struct {
 
 func testGorm() {
 	var test Test
-	global.DB.Find(&test, 1)
+	global.GaDb.Find(&test, 1)
 	fmt.Println(test.Id, test.Name)
 }
