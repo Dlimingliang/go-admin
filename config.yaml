@@ -1,4 +1,5 @@
-
+system:
+  server-name: go-admin
 mysql:
   host: 127.0.0.1
   port: 3306
@@ -14,6 +15,8 @@ zap:
   director: log
   encode-level: LowercaseLevelEncoder
   stacktrace-key: stacktrace
-  max-age: 0
   show-line: true
+  max-age: 0 #日志保留天数
+  max-size: 5 #单个日志大小 单位M
+  max-backups: 10 #最大日志数量
   log-in-file: true

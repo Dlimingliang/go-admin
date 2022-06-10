@@ -1,6 +1,7 @@
 package config
 
 type Server struct {
-	MysqlConfig Mysql `mapstructure:"mysql"`
-	ZapConfig   Zap   `mapstructure:"zap"`
+	SystemConfig System `mapstructure:"system"`
+	MysqlConfig  Mysql  `mapstructure:"mysql"`
+	ZapConfig    Zap    `mapstructure:"zap"`
 }

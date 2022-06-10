@@ -1,6 +1,7 @@
 package initialize
 
 import (
+	"fmt"
 	"github.com/natefinch/lumberjack"
 	"os"
 	"time"
@@ -14,41 +15,28 @@ import (
 /**
 zap 配置项
 1. 日志格式
-2. 日志输出地
-3.
+2. 日志输出地 控制台、文件控制台都有-俩种方式
+3. 写入文件的时候，要有分割日期分割、大小分割、级别分割
 */
 
 func InitZap() {
 
 	zapConfigInfo := global.ServerConfig.ZapConfig
-	cores := make([]zapcore.Core, 0, 7)
-	debugLevel := getEncoderCore(zap.DebugLevel)
-	infoLevel := getEncoderCore(zap.InfoLevel)
-	warnLevel := getEncoderCore(zap.WarnLevel)
-	errorLevel := getEncoderCore(zap.ErrorLevel)
-	dPanicLevel := getEncoderCore(zap.DPanicLevel)
-	panicLevel := getEncoderCore(zap.PanicLevel)
-	fatalLevel := getEncoderCore(zap.FatalLevel)
+	var core zapcore.Core
 
 	switch zapConfigInfo.Level {
 	case "debug", "DEBUG":
-		cores = append(cores, debugLevel, infoLevel, warnLevel, errorLevel, dPanicLevel, panicLevel, fatalLevel)
+		core = getEncoderCore(zapcore.DebugLevel)
 	case "info", "INFO":
-		cores = append(cores, infoLevel, warnLevel, errorLevel, dPanicLevel, panicLevel, fatalLevel)
+		core = getEncoderCore(zapcore.InfoLevel)
 	case "warn", "WARN":
-		cores = append(cores, warnLevel, errorLevel, dPanicLevel, panicLevel, fatalLevel)
+		core = getEncoderCore(zapcore.WarnLevel)
 	case "error", "ERROR":
-		cores = append(cores, errorLevel, dPanicLevel, panicLevel, fatalLevel)
-	case "dpanic", "DPANIC":
-		cores = append(cores, dPanicLevel, panicLevel, fatalLevel)
-	case "panic", "PANIC":
-		cores = append(cores, panicLevel, fatalLevel)
-	case "fatal", "FATAL":
-		cores = append(cores, panicLevel, fatalLevel)
+		core = getEncoderCore(zapcore.ErrorLevel)
 	default:
-		cores = append(cores, debugLevel, infoLevel, warnLevel, errorLevel, dPanicLevel, panicLevel, fatalLevel)
+		core = getEncoderCore(zapcore.DebugLevel)
 	}
-	logger := zap.New(debugLevel)
+	logger := zap.New(core)
 	if zapConfigInfo.ShowLine {
 		logger = logger.WithOptions(zap.AddCaller())
 	}
@@ -59,9 +47,10 @@ func getEncoderCore(level zapcore.Level) (core zapcore.Core) {
 	var writeSyncer zapcore.WriteSyncer
 	if global.ServerConfig.ZapConfig.LogInFile {
 		lumberJackLogger := &lumberjack.Logger{
-			Filename:   "./test.log",
-			MaxSize:    10,
-			MaxBackups: 5,
+			Filename:   fmt.Sprintf("./%s.log", global.ServerConfig.SystemConfig.ServerName),
+			MaxSize:    global.ServerConfig.ZapConfig.MaxSize,
+			MaxBackups: global.ServerConfig.ZapConfig.MaxBackups,
+			LocalTime:  true,
 			MaxAge:     global.ServerConfig.ZapConfig.MaxAge,
 			Compress:   true,
 		}
