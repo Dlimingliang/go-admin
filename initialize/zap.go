@@ -48,8 +48,11 @@ func InitZap() {
 	default:
 		cores = append(cores, debugLevel, infoLevel, warnLevel, errorLevel, dPanicLevel, panicLevel, fatalLevel)
 	}
-
-	global.GaLog = zap.New(debugLevel, zap.AddCaller())
+	logger := zap.New(debugLevel)
+	if zapConfigInfo.ShowLine {
+		logger = logger.WithOptions(zap.AddCaller())
+	}
+	global.GaLog = logger
 }
 
 func getEncoderCore(level zapcore.Level) (core zapcore.Core) {

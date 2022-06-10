@@ -7,4 +7,5 @@ type Zap struct {
 	Director      string `mapstructure:"director"`
 	EncodeLevel   string `mapstructure:"encode-level"`
 	StacktraceKey string `mapstructure:"stacktrace-key"`
+	ShowLine      bool   `mapstructure:"show-line"`
 }

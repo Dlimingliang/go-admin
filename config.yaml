@@ -13,3 +13,4 @@ zap:
   director: log
   encode-level: LowercaseColorLevelEncoder
   stacktrace-key: stacktrace
+  show-line: true
