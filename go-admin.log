@@ -1,3 +1,0 @@
-[github.com/Dlimingliang/go-admin] 2022-06-10 15:06:36.055	info	/Users/limingliang/go/src/github.com/Dlimingliang/go-admin/main.go:13	zap 打印Info日志测试
-[github.com/Dlimingliang/go-admin] 2022-06-10 15:06:36.055	warn	/Users/limingliang/go/src/github.com/Dlimingliang/go-admin/main.go:14	zap 打印Warn日志测试
-[github.com/Dlimingliang/go-admin] 2022-06-10 15:06:36.055	error	/Users/limingliang/go/src/github.com/Dlimingliang/go-admin/main.go:15	zap 打印Error日志测试

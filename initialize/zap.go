@@ -2,24 +2,30 @@ package initialize
 
 import (
 	"fmt"
-	"github.com/natefinch/lumberjack"
 	"os"
 	"time"
 
+	"github.com/natefinch/lumberjack"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 
 	"github.com/Dlimingliang/go-admin/global"
+	"github.com/Dlimingliang/go-admin/utils"
 )
 
 /**
 zap 配置项
 1. 日志格式
 2. 日志输出地 控制台、文件控制台都有-俩种方式
-3. 写入文件的时候，要有分割日期分割、大小分割、级别分割
+3. 写入文件的时候，要有大小分割
 */
 
 func InitZap() {
+
+	if ok, _ := utils.PathExists(global.ServerConfig.ZapConfig.Director); !ok { // 判断是否有Director文件夹
+		fmt.Printf("创建 %v 目录\n", global.ServerConfig.ZapConfig.Director)
+		_ = os.Mkdir(global.ServerConfig.ZapConfig.Director, os.ModePerm)
+	}
 
 	zapConfigInfo := global.ServerConfig.ZapConfig
 	var core zapcore.Core
@@ -47,7 +53,7 @@ func getEncoderCore(level zapcore.Level) (core zapcore.Core) {
 	var writeSyncer zapcore.WriteSyncer
 	if global.ServerConfig.ZapConfig.LogInFile {
 		lumberJackLogger := &lumberjack.Logger{
-			Filename:   fmt.Sprintf("./%s.log", global.ServerConfig.SystemConfig.ServerName),
+			Filename:   fmt.Sprintf("./%s/%s.log", global.ServerConfig.ZapConfig.Director, global.ServerConfig.SystemConfig.ServerName),
 			MaxSize:    global.ServerConfig.ZapConfig.MaxSize,
 			MaxBackups: global.ServerConfig.ZapConfig.MaxBackups,
 			LocalTime:  true,
