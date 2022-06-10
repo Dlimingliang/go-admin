@@ -1,14 +1,13 @@
 package initialize
 
 import (
-	"log"
-	"os"
 	"time"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
+	"moul.io/zapgorm2"
 
 	"github.com/Dlimingliang/go-admin/config"
 	"github.com/Dlimingliang/go-admin/global"
@@ -38,14 +37,27 @@ func InitGorm() {
 		},
 	}
 	//gorm日志配置
-	gormLogger := logger.New(
-		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer（日志输出的目标，前缀和日志包含的内容——译者注）
-		logger.Config{
-			SlowThreshold: time.Second, // 慢 SQL 阈值
-			LogLevel:      logger.Info, // 日志级别
-			Colorful:      true,        // 禁用彩色打印
-		},
-	)
+
+	//gorm默认日志配置
+	//gormLogger := logger.New(
+	//	log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer（日志输出的目标，前缀和日志包含的内容——译者注）
+	//	logger.Config{
+	//		SlowThreshold: time.Second, // 慢 SQL 阈值
+	//		LogLevel:      logger.Info, // 日志级别
+	//		Colorful:      true,        // 禁用彩色打印
+	//	},
+	//)
+
+	//gorm使用zap记录日志
+	gormLogger := zapgorm2.Logger{
+		ZapLogger:                 global.GaLog,
+		LogLevel:                  logger.Info,
+		SlowThreshold:             100 * time.Millisecond,
+		SkipCallerLookup:          false,
+		IgnoreRecordNotFoundError: true,
+	}
+	gormLogger.SetAsDefault()
+
 	switch mysqlConfigInfo.LogMode {
 	case config.MysqlSlientLog:
 		gormConfig.Logger = gormLogger.LogMode(logger.Silent)
@@ -69,4 +81,5 @@ func InitGorm() {
 		sqlDB.SetConnMaxLifetime(time.Hour)                //连接空闲超时
 		global.GaDb = db
 	}
+
 }

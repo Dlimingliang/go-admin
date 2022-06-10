@@ -12,7 +12,7 @@ mysql:
   max-open-conn: 100
 
 zap:
-  level: info
+  level: debug
   prefix: '[github.com/Dlimingliang/go-admin]'
   format: console
   director: log
