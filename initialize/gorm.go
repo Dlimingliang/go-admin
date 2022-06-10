@@ -10,6 +10,7 @@ import (
 	"gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
 
+	"github.com/Dlimingliang/go-admin/config"
 	"github.com/Dlimingliang/go-admin/global"
 )
 
@@ -42,18 +43,17 @@ func InitGorm() {
 		logger.Config{
 			SlowThreshold: time.Second, // 慢 SQL 阈值
 			LogLevel:      logger.Info, // 日志级别
-			//IgnoreRecordNotFoundError: true,        // 忽略ErrRecordNotFound（记录未找到）错误
-			Colorful: true, // 禁用彩色打印
+			Colorful:      true,        // 禁用彩色打印
 		},
 	)
 	switch mysqlConfigInfo.LogMode {
-	case "silent", "Silent":
+	case config.MysqlSlientLog:
 		gormConfig.Logger = gormLogger.LogMode(logger.Silent)
-	case "error", "Error":
+	case config.MysqlErrorLog:
 		gormConfig.Logger = gormLogger.LogMode(logger.Error)
-	case "warn", "Warn":
+	case config.MysqlWarnLog:
 		gormConfig.Logger = gormLogger.LogMode(logger.Warn)
-	case "info", "Info":
+	case config.MysqlInfoLog:
 		gormConfig.Logger = gormLogger.LogMode(logger.Info)
 	default:
 		gormConfig.Logger = gormLogger.LogMode(logger.Info)
@@ -64,9 +64,9 @@ func InitGorm() {
 	} else {
 		//设置连接池
 		sqlDB, _ := db.DB()
-		sqlDB.SetMaxIdleConns(10)           //最大空闲连接数
-		sqlDB.SetMaxOpenConns(100)          //最大连接数
-		sqlDB.SetConnMaxLifetime(time.Hour) //连接空闲超时
+		sqlDB.SetMaxIdleConns(mysqlConfigInfo.MaxIdleConn) //最大空闲连接数
+		sqlDB.SetMaxOpenConns(mysqlConfigInfo.MaxOpenConn) //最大连接数
+		sqlDB.SetConnMaxLifetime(time.Hour)                //连接空闲超时
 		global.GaDb = db
 	}
 }

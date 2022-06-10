@@ -2,14 +2,23 @@ package config
 
 import "fmt"
 
+const (
+	MysqlSlientLog = "silent"
+	MysqlErrorLog  = "error"
+	MysqlWarnLog   = "warn"
+	MysqlInfoLog   = "info"
+)
+
 type Mysql struct {
-	Host     string `mapstructure:"host"`
-	Port     int    `mapstructure:"port"`
-	DbName   string `mapstructure:"db-name"`
-	Config   string `mapstructure:"config"`
-	User     string `mapstructure:"user"`
-	Password string `mapstructure:"password"`
-	LogMode  string `mapstructure:"log-mode"`
+	Host        string `mapstructure:"host"`
+	Port        int    `mapstructure:"port"`
+	DbName      string `mapstructure:"db-name"`
+	Config      string `mapstructure:"config"`
+	User        string `mapstructure:"user"`
+	Password    string `mapstructure:"password"`
+	LogMode     string `mapstructure:"log-mode"`
+	MaxIdleConn int    `mapstructure:"max-idle-conn"`
+	MaxOpenConn int    `mapstructure:"max-open-conn"`
 }
 
 func (mysqlConfig *Mysql) Dsn() string {

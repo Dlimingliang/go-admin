@@ -22,7 +22,7 @@ func InitViper() {
 
 	var configFile string
 	//依次从命令行>环境变量>默认配置读取配置文件地址
-	flag.StringVar(&configFile, config.FileEnv, "", "config file address.")
+	flag.StringVar(&configFile, config.FileEnv, "", "配置文件地址.")
 	flag.Parse()
 	if configFile == "" {
 		if configEnv := os.Getenv(config.FileEnv); configEnv == "" {
