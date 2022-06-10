@@ -19,4 +19,4 @@ zap:
   max-age: 0 #日志保留天数
   max-size: 5 #单个日志大小 单位M
   max-backups: 10 #最大日志数量
-  log-in-file: true
+  log-in-file: false #开发环境可不打印

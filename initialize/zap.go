@@ -9,6 +9,7 @@ import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 
+	"github.com/Dlimingliang/go-admin/config"
 	"github.com/Dlimingliang/go-admin/global"
 	"github.com/Dlimingliang/go-admin/utils"
 )
@@ -31,13 +32,13 @@ func InitZap() {
 	var core zapcore.Core
 
 	switch zapConfigInfo.Level {
-	case "debug", "DEBUG":
+	case config.ZapDebug:
 		core = getEncoderCore(zapcore.DebugLevel)
-	case "info", "INFO":
+	case config.ZapInfo:
 		core = getEncoderCore(zapcore.InfoLevel)
-	case "warn", "WARN":
+	case config.ZapWarn:
 		core = getEncoderCore(zapcore.WarnLevel)
-	case "error", "ERROR":
+	case config.ZapError:
 		core = getEncoderCore(zapcore.ErrorLevel)
 	default:
 		core = getEncoderCore(zapcore.DebugLevel)
@@ -69,7 +70,7 @@ func getEncoderCore(level zapcore.Level) (core zapcore.Core) {
 }
 
 func getEncoder() zapcore.Encoder {
-	if global.ServerConfig.ZapConfig.Format == "json" {
+	if global.ServerConfig.ZapConfig.Format == config.ZapJsonFormat {
 		return zapcore.NewJSONEncoder(getEncoderConfig())
 	}
 	return zapcore.NewConsoleEncoder(getEncoderConfig())
@@ -77,7 +78,7 @@ func getEncoder() zapcore.Encoder {
 
 func getEncoderConfig() zapcore.EncoderConfig {
 	zapConfigInfo := global.ServerConfig.ZapConfig
-	config := zapcore.EncoderConfig{
+	encoderConfig := zapcore.EncoderConfig{
 		TimeKey:        "time",
 		LevelKey:       "level",
 		NameKey:        "logger",
@@ -91,18 +92,18 @@ func getEncoderConfig() zapcore.EncoderConfig {
 		EncodeCaller:   zapcore.FullCallerEncoder,
 	}
 	switch {
-	case zapConfigInfo.EncodeLevel == "LowercaseLevelEncoder": // 小写编码器(默认)
-		config.EncodeLevel = zapcore.LowercaseLevelEncoder
-	case zapConfigInfo.EncodeLevel == "LowercaseColorLevelEncoder": // 小写编码器带颜色
-		config.EncodeLevel = zapcore.LowercaseColorLevelEncoder
-	case zapConfigInfo.EncodeLevel == "CapitalLevelEncoder": // 大写编码器
-		config.EncodeLevel = zapcore.CapitalLevelEncoder
-	case zapConfigInfo.EncodeLevel == "CapitalColorLevelEncoder": // 大写编码器带颜色
-		config.EncodeLevel = zapcore.CapitalColorLevelEncoder
+	case zapConfigInfo.EncodeLevel == config.ZapLE: // 小写编码器(默认)
+		encoderConfig.EncodeLevel = zapcore.LowercaseLevelEncoder
+	case zapConfigInfo.EncodeLevel == config.ZapLCE: // 小写编码器带颜色
+		encoderConfig.EncodeLevel = zapcore.LowercaseColorLevelEncoder
+	case zapConfigInfo.EncodeLevel == config.ZapCE: // 大写编码器
+		encoderConfig.EncodeLevel = zapcore.CapitalLevelEncoder
+	case zapConfigInfo.EncodeLevel == config.ZapCCE: // 大写编码器带颜色
+		encoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder
 	default:
-		config.EncodeLevel = zapcore.LowercaseLevelEncoder
+		encoderConfig.EncodeLevel = zapcore.LowercaseLevelEncoder
 	}
-	return config
+	return encoderConfig
 }
 
 func CustomTimeEncoder(t time.Time, enc zapcore.PrimitiveArrayEncoder) {

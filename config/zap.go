@@ -1,5 +1,17 @@
 package config
 
+const (
+	ZapDebug      = "debug"
+	ZapInfo       = "info"
+	ZapWarn       = "warn"
+	ZapError      = "error"
+	ZapJsonFormat = "json"
+	ZapLE         = "LowercaseLevelEncoder"
+	ZapLCE        = "LowercaseColorLevelEncoder"
+	ZapCE         = "CapitalLevelEncoder"
+	ZapCCE        = "CapitalColorLevelEncoder"
+)
+
 type Zap struct {
 	Level         string `mapstructure:"level"`
 	Prefix        string `mapstructure:"prefix"`
