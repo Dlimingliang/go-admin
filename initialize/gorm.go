@@ -72,6 +72,7 @@ func InitGorm() {
 	}
 
 	if db, err := gorm.Open(mysql.New(mysqlConfig), gormConfig); err != nil {
+		global.GaLog.Fatal("数据库连接失败")
 		return
 	} else {
 		//设置连接池
