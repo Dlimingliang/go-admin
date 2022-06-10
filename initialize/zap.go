@@ -47,6 +47,7 @@ func InitZap() {
 	if zapConfigInfo.ShowLine {
 		logger = logger.WithOptions(zap.AddCaller())
 	}
+	zap.ReplaceGlobals(logger)
 	global.GaLog = logger
 }
 
