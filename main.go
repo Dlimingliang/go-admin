@@ -10,7 +10,9 @@ import (
 func main() {
 	initialize.InitViper()
 	initialize.InitZap()
-	global.GaLog.Info("zap 打印日志测试")
+	global.GaLog.Info("zap 打印Info日志测试")
+	global.GaLog.Warn("zap 打印Warn日志测试")
+	global.GaLog.Error("zap 打印Error日志测试")
 	//初始化数据库
 	initialize.InitGorm()
 	testGorm()

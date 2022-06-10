@@ -1,6 +1,7 @@
 package initialize
 
 import (
+	"github.com/natefinch/lumberjack"
 	"os"
 	"time"
 
@@ -14,8 +15,7 @@ import (
 zap 配置项
 1. 日志格式
 2. 日志输出地
-3. 日志级别文件拆分
-4. 日志是否需要拆分、压缩、删除
+3.
 */
 
 func InitZap() {
@@ -56,8 +56,21 @@ func InitZap() {
 }
 
 func getEncoderCore(level zapcore.Level) (core zapcore.Core) {
+	var writeSyncer zapcore.WriteSyncer
+	if global.ServerConfig.ZapConfig.LogInFile {
+		lumberJackLogger := &lumberjack.Logger{
+			Filename:   "./test.log",
+			MaxSize:    10,
+			MaxBackups: 5,
+			MaxAge:     global.ServerConfig.ZapConfig.MaxAge,
+			Compress:   true,
+		}
+		writeSyncer = zapcore.NewMultiWriteSyncer(zapcore.AddSync(os.Stdout), zapcore.AddSync(lumberJackLogger))
+	} else {
+		writeSyncer = zapcore.AddSync(os.Stdout)
+	}
 
-	return zapcore.NewCore(getEncoder(), zapcore.AddSync(os.Stderr), level)
+	return zapcore.NewCore(getEncoder(), writeSyncer, level)
 }
 
 func getEncoder() zapcore.Encoder {
