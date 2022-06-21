@@ -12,8 +12,10 @@ import (
 
 func GetUserList(ctx *gin.Context) {
 	pageInfo := request.PageInfo{}
-	//暂时不做错误处理
-	_ = ctx.ShouldBind(&pageInfo)
+	if err := ctx.ShouldBind(&pageInfo); err != nil {
+		HandlerValidatorErr(err, ctx)
+		return
+	}
 
 	if userList, total, err := userService.GetUserList(pageInfo); err != nil {
 		global.GaLog.Error("获取失败", zap.Error(err))

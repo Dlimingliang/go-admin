@@ -13,6 +13,7 @@ func main() {
 	initialize.InitZap()
 	initialize.InitGorm()
 	ginRouter := initialize.InitRouters()
+	initialize.InitValidator()
 	//migrate()
 
 	if err := ginRouter.Run(fmt.Sprintf(":%d", global.ServerConfig.SystemConfig.ServerPort)); err != nil {
