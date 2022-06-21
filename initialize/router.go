@@ -18,7 +18,7 @@ func InitRouters() *gin.Engine {
 		AllowAllOrigins: true,
 		//AllowOrigins:           nil,
 		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"},
-		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type"},
+		AllowHeaders:     []string{"*"},
 		AllowCredentials: true,
 		ExposeHeaders:    []string{"Content-Length", "Access-Control-Allow-Origin", "Access-Control-Allow-Headers", "Content-Type"},
 		MaxAge:           12 * time.Hour,

@@ -9,6 +9,6 @@ import (
 func InitUserRouter(group *gin.RouterGroup) {
 	userGroup := group.Group("user")
 	{
-		userGroup.GET("getUserList", v1.GetUserList)
+		userGroup.POST("getUserList", v1.GetUserList)
 	}
 }
