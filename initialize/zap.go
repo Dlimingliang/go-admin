@@ -23,7 +23,7 @@ zap 配置项
 
 func InitZap() {
 
-	if ok, _ := utils.PathExists(global.ServerConfig.ZapConfig.Director); !ok { // 判断是否有Director文件夹
+	if ok, _ := utils.PathExists(global.ServerConfig.ZapConfig.Director); global.ServerConfig.ZapConfig.LogInFile && !ok { // 判断是否有Director文件夹
 		fmt.Printf("创建 %v 目录\n", global.ServerConfig.ZapConfig.Director)
 		_ = os.Mkdir(global.ServerConfig.ZapConfig.Director, os.ModePerm)
 	}
