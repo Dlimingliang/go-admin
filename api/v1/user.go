@@ -53,3 +53,41 @@ func RegisterAdmin(ctx *gin.Context) {
 		response.SuccessWithDetailed(response.UserResult{User: user}, "注册成功", ctx)
 	}
 }
+
+func SetUserInfo(ctx *gin.Context) {
+	changeUserInfo := request.ChangeUserInfo{}
+	if err := ctx.ShouldBind(&changeUserInfo); err != nil {
+		HandlerValidatorErr(err, ctx)
+		return
+	}
+
+	user := model.User{
+		BaseModel: model.BaseModel{
+			ID: changeUserInfo.ID,
+		},
+		NickName:  changeUserInfo.NickName,
+		Email:     changeUserInfo.Email,
+		HeaderImg: changeUserInfo.HeaderImg,
+	}
+	if err := userService.SetUserInfo(user); err != nil {
+		global.GaLog.Error("更新失败", zap.Error(err))
+		response.FailWithMessage("更新失败", ctx)
+	} else {
+		response.SuccessWithMessage("更新成功", ctx)
+	}
+}
+
+func DeleteUser(ctx *gin.Context) {
+	reqId := request.ById{}
+	if err := ctx.ShouldBind(&reqId); err != nil {
+		HandlerValidatorErr(err, ctx)
+		return
+	}
+
+	if err := userService.DeleteUser(reqId.ID); err != nil {
+		global.GaLog.Error("删除失败", zap.Error(err))
+		response.FailWithMessage("删除失败", ctx)
+	} else {
+		response.SuccessWithMessage("删除成功", ctx)
+	}
+}

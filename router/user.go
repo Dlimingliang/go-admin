@@ -10,8 +10,8 @@ func InitUserRouter(group *gin.RouterGroup) {
 	userGroup := group.Group("user")
 	{
 		userGroup.POST("admin_register", v1.RegisterAdmin)
-		userGroup.PUT("setUserInfo")
-		userGroup.DELETE("deleteUser")
+		userGroup.PUT("setUserInfo", v1.SetUserInfo)
+		userGroup.DELETE("deleteUser", v1.DeleteUser)
 		userGroup.PUT("resetPassword")
 	}
 

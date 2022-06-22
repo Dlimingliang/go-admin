@@ -8,3 +8,10 @@ type Register struct {
 	Email     string `json:"email"`
 	HeaderImg string `json:"headerImg"`
 }
+
+type ChangeUserInfo struct {
+	ID        int
+	NickName  string `json:"nickName"`
+	Email     string `json:"email"`
+	HeaderImg string `json:"headerImg"`
+}
