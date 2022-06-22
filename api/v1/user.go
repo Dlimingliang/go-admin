@@ -77,6 +77,21 @@ func SetUserInfo(ctx *gin.Context) {
 	}
 }
 
+func ResetPassword(ctx *gin.Context) {
+	reqId := request.ById{}
+	if err := ctx.ShouldBind(&reqId); err != nil {
+		HandlerValidatorErr(err, ctx)
+		return
+	}
+
+	if err := userService.ResetPassword(reqId.ID); err != nil {
+		global.GaLog.Error("重置失败", zap.Error(err))
+		response.FailWithMessage("重置失败", ctx)
+	} else {
+		response.SuccessWithMessage("重置成功", ctx)
+	}
+}
+
 func DeleteUser(ctx *gin.Context) {
 	reqId := request.ById{}
 	if err := ctx.ShouldBind(&reqId); err != nil {

@@ -9,10 +9,10 @@ import (
 func InitUserRouter(group *gin.RouterGroup) {
 	userGroup := group.Group("user")
 	{
-		userGroup.POST("admin_register", v1.RegisterAdmin)
-		userGroup.PUT("setUserInfo", v1.SetUserInfo)
-		userGroup.DELETE("deleteUser", v1.DeleteUser)
-		userGroup.PUT("resetPassword")
+		userGroup.POST("admin_register", v1.RegisterAdmin) //注册管理员
+		userGroup.PUT("setUserInfo", v1.SetUserInfo)       //设置用户信息
+		userGroup.PUT("resetPassword", v1.ResetPassword)   //重置密码为123456
+		userGroup.DELETE("deleteUser", v1.DeleteUser)      //删除用户
 	}
 
 	userGroupWithoutRecord := group.Group("user")
