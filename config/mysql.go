@@ -4,7 +4,7 @@ import "fmt"
 
 const (
 	MysqlSlientLog = "silent"
-	MysqlErrorLog  = "error"
+	MysqlErrorLog  = "businesserror"
 	MysqlWarnLog   = "warn"
 	MysqlInfoLog   = "info"
 )

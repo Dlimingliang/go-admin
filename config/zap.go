@@ -4,7 +4,7 @@ const (
 	ZapDebug      = "debug"
 	ZapInfo       = "info"
 	ZapWarn       = "warn"
-	ZapError      = "error"
+	ZapError      = "businesserror"
 	ZapJsonFormat = "json"
 	ZapLE         = "LowercaseLevelEncoder"
 	ZapLCE        = "LowercaseColorLevelEncoder"

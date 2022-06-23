@@ -1,8 +1,7 @@
 package service
 
 import (
-	"errors"
-
+	"github.com/Dlimingliang/go-admin/core/business"
 	"github.com/Dlimingliang/go-admin/global"
 	"github.com/Dlimingliang/go-admin/model"
 	"github.com/Dlimingliang/go-admin/model/request"
@@ -28,10 +27,10 @@ func (userService *UserService) GetUserList(page request.PageInfo) ([]model.User
 func (userService *UserService) RegisterAdmin(user model.User) (model.User, error) {
 	//验证用户和电话是否存在
 	if result := global.GaDb.Where(&model.User{Username: user.Username}).First(&user); result.RowsAffected > 0 {
-		return user, errors.New("该用户名已被使用")
+		return user, business.New("该用户名已被使用")
 	}
 	if result := global.GaDb.Where(&model.User{Mobile: user.Mobile}).First(&user); result.RowsAffected > 0 {
-		return user, errors.New("该电话已被使用")
+		return user, business.New("该电话已被使用")
 	}
 
 	//生成用户密码

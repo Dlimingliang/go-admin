@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"github.com/Dlimingliang/go-admin/core/business"
 	"go.uber.org/zap"
 
 	"github.com/gin-gonic/gin"
@@ -38,7 +39,7 @@ func RegisterAdmin(ctx *gin.Context) {
 		return
 	}
 
-	user := model.User{
+	createUser := model.User{
 		Username:  register.Username,
 		Password:  register.Password,
 		NickName:  register.NickName,
@@ -46,9 +47,14 @@ func RegisterAdmin(ctx *gin.Context) {
 		Email:     register.Email,
 		HeaderImg: register.HeaderImg,
 	}
-	if user, err := userService.RegisterAdmin(user); err != nil {
-		global.GaLog.Error("注册失败", zap.Error(err))
-		response.FailWithMessage("注册失败", ctx)
+	if user, err := userService.RegisterAdmin(createUser); err != nil {
+		errs, ok := err.(business.GAValidateError)
+		if ok {
+			response.FailWithMessage(errs.Error(), ctx)
+		} else {
+			global.GaLog.Error("注册失败", zap.Error(err))
+			response.FailWithMessage("注册失败", ctx)
+		}
 	} else {
 		response.SuccessWithDetailed(response.UserResult{User: user}, "注册成功", ctx)
 	}

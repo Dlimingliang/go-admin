@@ -15,6 +15,7 @@ func HandlerValidatorErr(err error, ctx *gin.Context) {
 	if !ok {
 		global.GaLog.Error("数据绑定错误", zap.Error(errs))
 		response.FailWithMessage("数据绑定错误", ctx)
+		return
 	}
 	response.FailWithMessage(removeTopStruct(errs.Translate(global.ValidatorTrans)), ctx)
 }
