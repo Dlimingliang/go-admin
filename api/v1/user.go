@@ -65,6 +65,7 @@ func SetUserInfo(ctx *gin.Context) {
 		BaseModel: model.BaseModel{
 			ID: changeUserInfo.ID,
 		},
+		Mobile:    changeUserInfo.Mobile,
 		NickName:  changeUserInfo.NickName,
 		Email:     changeUserInfo.Email,
 		HeaderImg: changeUserInfo.HeaderImg,

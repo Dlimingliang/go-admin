@@ -12,6 +12,7 @@ type Register struct {
 type ChangeUserInfo struct {
 	ID        int
 	NickName  string `json:"nickName"`
+	Mobile    string `json:"phone"`
 	Email     string `json:"email"`
 	HeaderImg string `json:"headerImg"`
 }
