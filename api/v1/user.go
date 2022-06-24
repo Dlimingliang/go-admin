@@ -1,13 +1,15 @@
 package v1
 
 import (
+	"github.com/gin-gonic/gin"
+
 	"github.com/Dlimingliang/go-admin/model"
 	"github.com/Dlimingliang/go-admin/model/request"
 	"github.com/Dlimingliang/go-admin/model/response"
-	"github.com/gin-gonic/gin"
 )
 
 func GetUserList(ctx *gin.Context) {
+
 	pageInfo := request.PageInfo{}
 	if err := ctx.ShouldBind(&pageInfo); err != nil {
 		HandlerErr(err, "数据绑定错误", ctx)
