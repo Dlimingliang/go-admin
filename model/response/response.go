@@ -7,12 +7,8 @@ import (
 )
 
 const (
-	Error            = 99
-	BusinessError    = 7
-	NoAuthorization  = 3
-	NoAuthentication = 2
-	ValidateError    = 1
-	Ok               = 0
+	BusinessError = 7
+	Ok            = 0
 )
 
 type Response struct {

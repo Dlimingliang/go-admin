@@ -19,10 +19,10 @@ func HandlerErr(err error, msg string, ctx *gin.Context) {
 		response.FailWithMessage(err.Error(), ctx)
 	case validator.ValidationErrors:
 		errs, _ := err.(validator.ValidationErrors)
-		response.ReturnResultWithHttpCode(http.StatusBadRequest, response.ValidateError, map[string]interface{}{}, removeTopStruct(errs.Translate(global.ValidatorTrans)), ctx)
+		response.ReturnResultWithHttpCode(http.StatusBadRequest, response.Ok, map[string]interface{}{}, removeTopStruct(errs.Translate(global.ValidatorTrans)), ctx)
 	default:
 		global.GaLog.Error(msg, zap.Error(err))
-		response.ReturnResultWithHttpCode(http.StatusInternalServerError, response.Error, map[string]interface{}{}, msg, ctx)
+		response.ReturnResultWithHttpCode(http.StatusInternalServerError, response.Ok, map[string]interface{}{}, msg, ctx)
 	}
 	return
 }

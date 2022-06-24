@@ -39,17 +39,13 @@ API接口的响应为JSON格式，并且会响应不同的HTTP status code
 ```
 code代表的意思:
 - 0 成功
-- 1 数据格式校验未通过
-- 2 未认证
-- 3 未授权
-- 4 业务校验未通过
-- 7 系统未知异常
+- 7 业务异常
 
 3. 各种情况的列举
 
-- 数据格式校验未通过 http status code为400 code=1 msg会携带未校验通过的信息
-- 业务验证未通过 http status为200 code=4 msg会携带业务验证错误信息，比如手机号已存在
-- 运行时异常 http status为500 code=7 msg会携带一些错误信息 比如新建失败
+- 数据格式校验未通过 http status code为400 msg会携带未校验通过的信息 code不太重要，就无所谓了
+- 业务验证未通过 http status为200 code=7 msg会携带业务验证错误信息，比如手机号已存在
+- 运行时异常 http status为500 msg会携带一些错误信息 比如新建失败,code不太重要，就无所谓了
 
 #### 总计划待做
 
