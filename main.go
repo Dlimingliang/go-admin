@@ -8,6 +8,12 @@ import (
 	"github.com/Dlimingliang/go-admin/model"
 )
 
+// @title GA-API接口文档
+// @description GA管理平台
+// @securityDefinitions.apikey ApiKeyAuth
+// @in header
+// @name x-token
+// @BasePath /
 func main() {
 	initialize.InitViper()
 	initialize.InitZap()

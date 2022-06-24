@@ -8,6 +8,13 @@ import (
 	"github.com/Dlimingliang/go-admin/model/response"
 )
 
+// @summary 分页获取用户列表
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data body request.PageInfo true "页码, 每页大小"
+// @Success 200 {object} response.Response{data=response.PageResult,msg=string} "分页获取用户列表,返回包括列表,总数,页码,每页数量"
+// @Router /user/getUserList [post]
 func GetUserList(ctx *gin.Context) {
 
 	pageInfo := request.PageInfo{}
