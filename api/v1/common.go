@@ -1,23 +1,30 @@
 package v1
 
 import (
+	"net/http"
+	"strings"
+
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"go.uber.org/zap"
-	"strings"
 
+	"github.com/Dlimingliang/go-admin/core/business"
 	"github.com/Dlimingliang/go-admin/global"
 	"github.com/Dlimingliang/go-admin/model/response"
 )
 
-func HandlerValidatorErr(err error, ctx *gin.Context) {
-	errs, ok := err.(validator.ValidationErrors)
-	if !ok {
-		global.GaLog.Error("数据绑定错误", zap.Error(errs))
-		response.FailWithMessage("数据绑定错误", ctx)
-		return
+func HandlerErr(err error, msg string, ctx *gin.Context) {
+	switch err.(type) {
+	case business.GAValidateError:
+		response.FailWithMessage(err.Error(), ctx)
+	case validator.ValidationErrors:
+		errs, _ := err.(validator.ValidationErrors)
+		response.ReturnResultWithHttpCode(http.StatusBadRequest, response.ValidateError, map[string]interface{}{}, removeTopStruct(errs.Translate(global.ValidatorTrans)), ctx)
+	default:
+		global.GaLog.Error(msg, zap.Error(err))
+		response.ReturnResultWithHttpCode(http.StatusInternalServerError, response.Error, map[string]interface{}{}, msg, ctx)
 	}
-	response.FailWithMessage(removeTopStruct(errs.Translate(global.ValidatorTrans)), ctx)
+	return
 }
 
 func removeTopStruct(fileds map[string]string) map[string]string {
