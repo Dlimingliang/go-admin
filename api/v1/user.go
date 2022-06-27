@@ -8,6 +8,7 @@ import (
 	"github.com/Dlimingliang/go-admin/model/response"
 )
 
+// GetUserList
 // @tags 用户相关接口
 // @summary 分页获取用户列表
 // @Security ApiKeyAuth
@@ -36,6 +37,15 @@ func GetUserList(ctx *gin.Context) {
 	}
 }
 
+// RegisterAdmin
+// @tags 用户相关接口
+// @summary 注册管理员接口
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data body request.Register true "用户名, 昵称, 密码, 角色ID"
+// @Success 200 {object} response.Response{data=response.UserResult} "用户注册账号,返回包括用户信息"
+// @Router /user/admin_register [post]
 func RegisterAdmin(ctx *gin.Context) {
 	register := request.Register{}
 	if err := ctx.ShouldBind(&register); err != nil {
@@ -58,6 +68,15 @@ func RegisterAdmin(ctx *gin.Context) {
 	}
 }
 
+// SetUserInfo
+// @tags 用户相关接口
+// @summary 修改管理员信息
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data body request.ChangeUserInfo true "ID, 用户名, 昵称, 头像链接"
+// @Success 200 {object} response.Response{msg=string} "修改管理员信息"
+// @Router /user/setUserInfo [put]
 func SetUserInfo(ctx *gin.Context) {
 	changeUserInfo := request.ChangeUserInfo{}
 	if err := ctx.ShouldBind(&changeUserInfo); err != nil {
@@ -81,6 +100,15 @@ func SetUserInfo(ctx *gin.Context) {
 	}
 }
 
+// ResetPassword
+// @tags 用户相关接口
+// @summary 重置密码
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data body request.ById true "ID"
+// @Success 200 {object} response.Response{msg=string} "重置密码"
+// @Router /user/resetPassword [post]
 func ResetPassword(ctx *gin.Context) {
 	reqId := request.ById{}
 	if err := ctx.ShouldBind(&reqId); err != nil {
@@ -95,6 +123,15 @@ func ResetPassword(ctx *gin.Context) {
 	}
 }
 
+// DeleteUser
+// @tags 用户相关接口
+// @summary 删除用户
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data body request.ById true "ID"
+// @Success 200 {object} response.Response{msg=string} "删除用户"
+// @Router /user/deleteUser [delete]
 func DeleteUser(ctx *gin.Context) {
 	reqId := request.ById{}
 	if err := ctx.ShouldBind(&reqId); err != nil {

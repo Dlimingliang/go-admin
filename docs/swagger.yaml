@@ -1,4 +1,49 @@
 definitions:
+  model.User:
+    properties:
+      CreatedAt:
+        type: string
+      ID:
+        type: integer
+      UpdatedAt:
+        type: string
+      email:
+        type: string
+      headerImg:
+        type: string
+      nickName:
+        type: string
+      phone:
+        type: string
+      userName:
+        type: string
+    type: object
+  request.ById:
+    properties:
+      id:
+        description: 主键ID
+        type: integer
+    required:
+    - id
+    type: object
+  request.ChangeUserInfo:
+    properties:
+      email:
+        description: 邮件
+        type: string
+      headerImg:
+        description: 头像
+        type: string
+      id:
+        description: ID
+        type: integer
+      nickName:
+        description: 昵称
+        type: string
+      phone:
+        description: 电话
+        type: string
+    type: object
   request.PageInfo:
     properties:
       keyword:
@@ -13,6 +58,37 @@ definitions:
     required:
     - page
     - pageSize
+    type: object
+  request.Register:
+    properties:
+      email:
+        description: 邮件
+        type: string
+      headerImg:
+        description: 头像
+        type: string
+      nickName:
+        description: 昵称
+        type: string
+      password:
+        description: 密码
+        maxLength: 16
+        minLength: 6
+        type: string
+      phone:
+        description: 电话
+        maxLength: 11
+        minLength: 11
+        type: string
+      userName:
+        description: 用户名
+        maxLength: 50
+        minLength: 1
+        type: string
+    required:
+    - password
+    - phone
+    - userName
     type: object
   response.PageResult:
     properties:
@@ -38,11 +114,73 @@ definitions:
       msg:
         description: 错误信息
     type: object
+  response.UserResult:
+    properties:
+      user:
+        $ref: '#/definitions/model.User'
+        description: 用户信息
+    type: object
 info:
   contact: {}
   description: GA管理平台
   title: GA-API接口文档
 paths:
+  /user/admin_register:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 用户名, 昵称, 密码, 角色ID
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.Register'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 用户注册账号,返回包括用户信息
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/response.UserResult'
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 注册管理员接口
+      tags:
+      - 用户相关接口
+  /user/deleteUser:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: ID
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.ById'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 删除用户
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 删除用户
+      tags:
+      - 用户相关接口
   /user/getUserList:
     post:
       consumes:
@@ -71,6 +209,62 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: 分页获取用户列表
+      tags:
+      - 用户相关接口
+  /user/resetPassword:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: ID
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.ById'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 重置密码
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 重置密码
+      tags:
+      - 用户相关接口
+  /user/setUserInfo:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: ID, 用户名, 昵称, 头像链接
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.ChangeUserInfo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 修改管理员信息
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 修改管理员信息
       tags:
       - 用户相关接口
 securityDefinitions:
