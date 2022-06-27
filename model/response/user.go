@@ -3,5 +3,5 @@ package response
 import "github.com/Dlimingliang/go-admin/model"
 
 type UserResult struct {
-	User model.User `json:"user"`
+	User model.User `json:"user"` //用户信息
 }

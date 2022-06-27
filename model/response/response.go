@@ -12,9 +12,9 @@ const (
 )
 
 type Response struct {
-	Code int         `json:"code"`
-	Msg  interface{} `json:"msg"`
-	Data interface{} `json:"data"`
+	Code int         `json:"code"` //编码
+	Msg  interface{} `json:"msg"`  //错误信息
+	Data interface{} `json:"data"` //数据
 }
 
 func ReturnResultWithHttpCode(httpCode int, code int, data interface{}, msg interface{}, ctx *gin.Context) {

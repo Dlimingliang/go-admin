@@ -29,6 +29,9 @@ const docTemplate = `{
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "用户相关接口"
+                ],
                 "summary": "分页获取用户列表",
                 "parameters": [
                     {
@@ -92,14 +95,19 @@ const docTemplate = `{
         "response.PageResult": {
             "type": "object",
             "properties": {
-                "list": {},
+                "list": {
+                    "description": "列表"
+                },
                 "page": {
+                    "description": "页码",
                     "type": "integer"
                 },
                 "pageSize": {
+                    "description": "每页大小",
                     "type": "integer"
                 },
                 "total": {
+                    "description": "总数",
                     "type": "integer"
                 }
             }
@@ -108,10 +116,15 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "code": {
+                    "description": "编码",
                     "type": "integer"
                 },
-                "data": {},
-                "msg": {}
+                "data": {
+                    "description": "数据"
+                },
+                "msg": {
+                    "description": "错误信息"
+                }
             }
         }
     },

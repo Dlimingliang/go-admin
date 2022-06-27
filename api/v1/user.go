@@ -8,6 +8,7 @@ import (
 	"github.com/Dlimingliang/go-admin/model/response"
 )
 
+// @tags 用户相关接口
 // @summary 分页获取用户列表
 // @Security ApiKeyAuth
 // @accept application/json
