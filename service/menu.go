@@ -1,6 +1,8 @@
 package service
 
 import (
+	"gorm.io/gorm"
+
 	"github.com/Dlimingliang/go-admin/core/business"
 	"github.com/Dlimingliang/go-admin/global"
 	"github.com/Dlimingliang/go-admin/model"
@@ -10,7 +12,9 @@ type MenuService struct{}
 
 func (menuService *MenuService) GetMenuTree() ([]model.Menu, error) {
 	var menuList []model.Menu
-	err := global.GaDb.Where(&model.Menu{ParentId: 0}).Preload("Children").Find(&menuList).Error
+	err := global.GaDb.Where("parent_id = ?", 0).Preload("Children", func(db *gorm.DB) *gorm.DB {
+		return db.Order("sort, create_time desc")
+	}).Order("sort, create_time desc").Find(&menuList).Error
 	return menuList, err
 }
 
