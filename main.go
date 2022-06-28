@@ -20,7 +20,7 @@ func main() {
 	initialize.InitGorm()
 	ginRouter := initialize.InitRouters()
 	initialize.InitValidator()
-	//migrate()
+	migrate()
 
 	if err := ginRouter.Run(fmt.Sprintf(":%d", global.ServerConfig.SystemConfig.ServerPort)); err != nil {
 		global.GaLog.Panic(err.Error())
@@ -28,5 +28,6 @@ func main() {
 }
 
 func migrate() {
-	global.GaDb.AutoMigrate(&model.User{})
+	//global.GaDb.AutoMigrate(&model.User{})
+	global.GaDb.AutoMigrate(&model.Menu{})
 }
