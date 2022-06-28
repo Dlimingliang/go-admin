@@ -68,10 +68,10 @@ func CreateMenu(ctx *gin.Context) {
 		Icon:      req.Icon,
 		RoutePath: req.RoutePath,
 		RouteName: req.RouteName,
-		Hidden:    req.Hidden,
+		Hidden:    *req.Hidden,
 		Component: req.Component,
 		Sort:      req.Sort,
-		ParentId:  req.ParentId,
+		ParentId:  *req.ParentId,
 	}
 
 	if menu, err := menuService.CreateMenu(createMenu); err != nil {
@@ -103,10 +103,10 @@ func UpdateMenu(ctx *gin.Context) {
 		Icon:      req.Icon,
 		RoutePath: req.RoutePath,
 		RouteName: req.RouteName,
-		Hidden:    req.Hidden,
+		Hidden:    *req.Hidden,
 		Component: req.Component,
 		Sort:      req.Sort,
-		ParentId:  req.ParentId,
+		ParentId:  *req.ParentId,
 	}
 
 	if err := menuService.UpdateMenu(updateMenu); err != nil {

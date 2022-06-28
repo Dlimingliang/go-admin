@@ -28,8 +28,8 @@ func (menuService *MenuService) CreateMenu(req model.Menu) (model.Menu, error) {
 		return menu, business.New("该菜单名称已存在")
 	}
 	//创建菜单
-	err := global.GaDb.Create(&menu).Error
-	return menu, err
+	err := global.GaDb.Create(&req).Error
+	return req, err
 }
 
 func (menuService *MenuService) UpdateMenu(req model.Menu) error {
