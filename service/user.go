@@ -24,23 +24,25 @@ func (userService *UserService) GetUserList(page request.PageInfo) ([]model.User
 	return userList, total, err
 }
 
-func (userService *UserService) RegisterAdmin(user model.User) (model.User, error) {
+func (userService *UserService) RegisterAdmin(req model.User) (model.User, error) {
+
+	var user model.User
 	//验证用户和电话是否存在
-	if result := global.GaDb.Where(&model.User{Username: user.Username}).First(&user); result.RowsAffected > 0 {
-		return user, business.New("该用户名已被使用")
+	if result := global.GaDb.Where(&model.User{Username: req.Username}).First(&user); result.RowsAffected > 0 {
+		return user, business.New("该用户名已存在")
 	}
-	if result := global.GaDb.Where(&model.User{Mobile: user.Mobile}).First(&user); result.RowsAffected > 0 {
-		return user, business.New("该电话已被使用")
+	if result := global.GaDb.Where(&model.User{Mobile: req.Mobile}).First(&user); result.RowsAffected > 0 {
+		return user, business.New("该电话已存在")
 	}
 
 	//生成用户密码
-	hashPassword, err := utils.HashPassword(user.Password)
+	hashPassword, err := utils.HashPassword(req.Password)
 	if err != nil {
 		return user, err
 	}
-	user.Password = hashPassword
+	req.Password = hashPassword
 	//创建用户并返回用户信息
-	err = global.GaDb.Create(&user).Error
+	err = global.GaDb.Create(&req).Error
 	return user, err
 }
 
@@ -48,11 +50,11 @@ func (userService *UserService) SetUserInfo(user model.User) error {
 	return global.GaDb.Updates(&user).Error
 }
 
-func (userService UserService) DeleteUser(id int) error {
+func (userService *UserService) DeleteUser(id int) error {
 	return global.GaDb.Delete(&model.User{}, id).Error
 }
 
-func (userService UserService) ResetPassword(id int) error {
+func (userService *UserService) ResetPassword(id int) error {
 	hashPassword, err := utils.HashPassword("123456")
 	if err != nil {
 		return err

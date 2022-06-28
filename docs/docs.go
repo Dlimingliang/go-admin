@@ -16,6 +16,251 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/menu/addBaseMenu": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "菜单相关接口"
+                ],
+                "summary": "新建菜单接口",
+                "parameters": [
+                    {
+                        "description": "菜单信息",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.MenuInfo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "菜单信息",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/response.MenuResult"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/menu/deleteBaseMenu": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "菜单相关接口"
+                ],
+                "summary": "删除菜单接口",
+                "parameters": [
+                    {
+                        "description": "ID",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.ById"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "删除菜单",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/menu/getBaseMenuById": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "菜单相关接口"
+                ],
+                "summary": "根据ID获取菜单接口",
+                "parameters": [
+                    {
+                        "description": "ID",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.ById"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "菜单信息",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/response.MenuResult"
+                                        },
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/menu/getMenu": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "菜单相关接口"
+                ],
+                "summary": "获取菜单树接口",
+                "responses": {
+                    "200": {
+                        "description": "菜单树信息",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/response.MenuTree"
+                                        },
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/menu/updateBaseMenu": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "菜单相关接口"
+                ],
+                "summary": "更新菜单接口",
+                "parameters": [
+                    {
+                        "description": "菜单信息",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.MenuInfo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "更新菜单",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/user/admin_register": {
             "post": {
                 "security": [
@@ -271,6 +516,58 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "model.Menu": {
+            "type": "object",
+            "properties": {
+                "CreatedAt": {
+                    "type": "string"
+                },
+                "ID": {
+                    "type": "integer"
+                },
+                "UpdatedAt": {
+                    "type": "string"
+                },
+                "children": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.Menu"
+                    }
+                },
+                "component": {
+                    "description": "前端文件路径",
+                    "type": "string"
+                },
+                "hidden": {
+                    "description": "是否在列表隐藏",
+                    "type": "boolean"
+                },
+                "icon": {
+                    "description": "图表",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "路由名称",
+                    "type": "string"
+                },
+                "parent_id": {
+                    "description": "父菜单id",
+                    "type": "integer"
+                },
+                "path": {
+                    "description": "路由path",
+                    "type": "string"
+                },
+                "sort": {
+                    "description": "排序",
+                    "type": "integer"
+                },
+                "title": {
+                    "description": "菜单名称",
+                    "type": "string"
+                }
+            }
+        },
         "model.User": {
             "type": "object",
             "properties": {
@@ -337,6 +634,68 @@ const docTemplate = `{
                 }
             }
         },
+        "request.MenuInfo": {
+            "type": "object",
+            "required": [
+                "component",
+                "hidden",
+                "icon",
+                "name",
+                "parentId",
+                "path",
+                "sort",
+                "title"
+            ],
+            "properties": {
+                "ID": {
+                    "type": "integer"
+                },
+                "component": {
+                    "description": "前端文件路径",
+                    "type": "string",
+                    "maxLength": 40,
+                    "minLength": 1
+                },
+                "hidden": {
+                    "description": "是否隐藏",
+                    "type": "boolean"
+                },
+                "icon": {
+                    "description": "icon",
+                    "type": "string",
+                    "maxLength": 20,
+                    "minLength": 1
+                },
+                "name": {
+                    "description": "路由名称",
+                    "type": "string",
+                    "maxLength": 20,
+                    "minLength": 1
+                },
+                "parentId": {
+                    "description": "父ID",
+                    "type": "integer"
+                },
+                "path": {
+                    "description": "路由path",
+                    "type": "string",
+                    "maxLength": 20,
+                    "minLength": 1
+                },
+                "sort": {
+                    "description": "排序",
+                    "type": "integer",
+                    "maximum": 999,
+                    "minimum": 1
+                },
+                "title": {
+                    "description": "菜单名称",
+                    "type": "string",
+                    "maxLength": 20,
+                    "minLength": 1
+                }
+            }
+        },
         "request.PageInfo": {
             "type": "object",
             "required": [
@@ -395,6 +754,27 @@ const docTemplate = `{
                     "type": "string",
                     "maxLength": 50,
                     "minLength": 1
+                }
+            }
+        },
+        "response.MenuResult": {
+            "type": "object",
+            "properties": {
+                "menu": {
+                    "description": "菜单信息",
+                    "$ref": "#/definitions/model.Menu"
+                }
+            }
+        },
+        "response.MenuTree": {
+            "type": "object",
+            "properties": {
+                "menuList": {
+                    "description": "菜单树",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.Menu"
+                    }
                 }
             }
         },
