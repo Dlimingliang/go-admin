@@ -1,8 +1,6 @@
 package service
 
 import (
-	"gorm.io/gorm"
-
 	"github.com/Dlimingliang/go-admin/core/business"
 	"github.com/Dlimingliang/go-admin/global"
 	"github.com/Dlimingliang/go-admin/model"
@@ -11,11 +9,30 @@ import (
 type MenuService struct{}
 
 func (menuService *MenuService) GetMenuTree() ([]model.Menu, error) {
+	//获取所有菜单
 	var menuList []model.Menu
-	err := global.GaDb.Where("parent_id = ?", 0).Preload("Children", func(db *gorm.DB) *gorm.DB {
-		return db.Order("sort, create_time desc")
-	}).Order("sort, create_time desc").Find(&menuList).Error
-	return menuList, err
+	err := global.GaDb.Order("sort, create_time desc").Find(&menuList).Error
+	if err != nil {
+		return menuList, err
+	}
+	//将菜单按照父菜单分组
+	menuMap := make(map[int][]model.Menu)
+	for _, menu := range menuList {
+		menuMap[menu.ParentId] = append(menuMap[menu.ParentId], menu)
+	}
+	//依次设置子集
+	routeMenu := menuMap[0]
+	for i := 0; i < len(routeMenu); i++ {
+		setChildrenMenu(&routeMenu[i], menuMap)
+	}
+	return routeMenu, err
+}
+
+func setChildrenMenu(menu *model.Menu, menuMap map[int][]model.Menu) {
+	menu.Children = menuMap[menu.ID]
+	for i := 0; i < len(menu.Children); i++ {
+		setChildrenMenu(&menu.Children[i], menuMap)
+	}
 }
 
 func (menuService *MenuService) GetMenuById(id int) (model.Menu, error) {
