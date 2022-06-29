@@ -85,12 +85,12 @@ const docTemplate = `{
                 "summary": "删除角色",
                 "parameters": [
                     {
-                        "description": "ID",
+                        "description": "角色信息",
                         "name": "data",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/request.ById"
+                            "$ref": "#/definitions/request.DeleteRole"
                         }
                     }
                 ],
@@ -897,6 +897,17 @@ const docTemplate = `{
                 },
                 "phone": {
                     "description": "电话",
+                    "type": "string"
+                }
+            }
+        },
+        "request.DeleteRole": {
+            "type": "object",
+            "required": [
+                "authorityId"
+            ],
+            "properties": {
+                "authorityId": {
                     "type": "string"
                 }
             }

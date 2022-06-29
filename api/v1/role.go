@@ -92,17 +92,17 @@ func UpdateRole(ctx *gin.Context) {
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body request.ById true "ID"
+// @Param data body request.DeleteRole true "角色信息"
 // @Success 200 {object} response.Response{msg=string} "删除角色"
 // @Router /authority/deleteAuthority [post]
 func DeleteRole(ctx *gin.Context) {
-	reqId := request.ById{}
+	reqId := request.DeleteRole{}
 	if err := ctx.ShouldBind(&reqId); err != nil {
 		HandlerErr(err, "数据绑定错误", ctx)
 		return
 	}
 
-	if err := roleService.DeleteRole(reqId.ID); err != nil {
+	if err := roleService.DeleteRole(reqId.AuthorityId); err != nil {
 		HandlerErr(err, "删除失败", ctx)
 	} else {
 		response.SuccessWithMessage("删除成功", ctx)

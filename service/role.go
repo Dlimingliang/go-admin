@@ -50,9 +50,9 @@ func (roleService *RoleService) UpdateRole(req model.Role) error {
 	return global.GaDb.Where("authority_id = ?", req.AuthorityId).Updates(&req).Error
 }
 
-func (roleService *RoleService) DeleteRole(id int) error {
+func (roleService *RoleService) DeleteRole(id string) error {
 	if result := global.GaDb.Where("parent_id = ?", id).First(&model.Role{}); result.RowsAffected > 0 {
 		return business.New("此角色存在子角色不可删除")
 	}
-	return global.GaDb.Delete(&model.Menu{}, id).Error
+	return global.GaDb.Where("authority_id = ?", id).Delete(&model.Role{}).Error
 }

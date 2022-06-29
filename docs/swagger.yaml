@@ -104,6 +104,13 @@ definitions:
         description: 电话
         type: string
     type: object
+  request.DeleteRole:
+    properties:
+      authorityId:
+        type: string
+    required:
+    - authorityId
+    type: object
   request.MenuInfo:
     properties:
       ID:
@@ -300,12 +307,12 @@ paths:
       consumes:
       - application/json
       parameters:
-      - description: ID
+      - description: 角色信息
         in: body
         name: data
         required: true
         schema:
-          $ref: '#/definitions/request.ById'
+          $ref: '#/definitions/request.DeleteRole'
       produces:
       - application/json
       responses:
