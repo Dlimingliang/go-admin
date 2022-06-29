@@ -36,6 +36,29 @@ definitions:
         description: 菜单名称
         type: string
     type: object
+  model.Role:
+    properties:
+      CreatedAt:
+        type: string
+      UpdatedAt:
+        type: string
+      authorityId:
+        description: 角色编码
+        type: string
+      authorityName:
+        description: 角色名称
+        type: string
+      children:
+        items:
+          $ref: '#/definitions/model.Role'
+        type: array
+      defaultRouter:
+        description: 默认菜单(默认dashboard)
+        type: string
+      parentId:
+        description: 父角色ID
+        type: string
+    type: object
   model.User:
     properties:
       CreatedAt:
@@ -105,7 +128,7 @@ definitions:
         type: string
       parentId:
         description: 父ID
-        type: integer
+        type: string
       path:
         description: 路由path
         maxLength: 20
@@ -177,6 +200,19 @@ definitions:
     - phone
     - userName
     type: object
+  request.RoleInfo:
+    properties:
+      authorityId:
+        type: string
+      authorityName:
+        type: string
+      parentId:
+        type: string
+    required:
+    - authorityId
+    - authorityName
+    - parentId
+    type: object
   response.MenuResult:
     properties:
       menu:
@@ -215,6 +251,11 @@ definitions:
       msg:
         description: 错误信息
     type: object
+  response.RoleResult:
+    properties:
+      authority:
+        $ref: '#/definitions/model.Role'
+    type: object
   response.UserResult:
     properties:
       user:
@@ -226,6 +267,113 @@ info:
   description: GA管理平台
   title: GA-API接口文档
 paths:
+  /authority/createAuthority:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 角色信息
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.RoleInfo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 角色信息
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/response.RoleResult'
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 新增角色
+      tags:
+      - 角色相关接口
+  /authority/deleteAuthority:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: ID
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.ById'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 删除角色
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 删除角色
+      tags:
+      - 角色相关接口
+  /authority/getAuthorityList:
+    post:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 角色列表信息
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/response.PageResult'
+                msg:
+                  type: string
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 获取角色列表
+      tags:
+      - 角色相关接口
+  /authority/updateAuthority:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 角色信息
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.RoleInfo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 更新角色
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 修改角色
+      tags:
+      - 角色相关接口
   /menu/addBaseMenu:
     post:
       consumes:

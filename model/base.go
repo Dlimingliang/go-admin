@@ -13,7 +13,7 @@ import (
 */
 
 type BaseModel struct {
-	ID         int                   `json:"ID" gorm:"primarykey"`
+	ID         int                   `json:"ID" gorm:"primary_key"`
 	CreateTime time.Time             `json:"CreatedAt" gorm:"column:create_time;type:datetime(3);not null;comment:创建时间;autoCreateTime:milli"`
 	CreateUser int                   `json:"-" gorm:"column:create_user;comment:创建人"`
 	UpdateTime time.Time             `json:"UpdatedAt" gorm:"column:update_time;not null;comment:更新时间;autoUpdateTime:milli"`

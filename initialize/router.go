@@ -34,5 +34,6 @@ func InitRouters() *gin.Engine {
 	apiGroup := ginRouter.Group("")
 	router.InitUserRouter(apiGroup)
 	router.InitMenuRouter(apiGroup)
+	router.InitRoleRouter(apiGroup)
 	return ginRouter
 }

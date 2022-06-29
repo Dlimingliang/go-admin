@@ -30,4 +30,5 @@ func main() {
 func migrate() {
 	global.GaDb.AutoMigrate(&model.User{})
 	global.GaDb.AutoMigrate(&model.Menu{})
+	global.GaDb.AutoMigrate(&model.Role{})
 }

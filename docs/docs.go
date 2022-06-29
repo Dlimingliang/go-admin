@@ -16,6 +16,198 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/authority/createAuthority": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "角色相关接口"
+                ],
+                "summary": "新增角色",
+                "parameters": [
+                    {
+                        "description": "角色信息",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.RoleInfo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "角色信息",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/response.RoleResult"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/authority/deleteAuthority": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "角色相关接口"
+                ],
+                "summary": "删除角色",
+                "parameters": [
+                    {
+                        "description": "ID",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.ById"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "删除角色",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/authority/getAuthorityList": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "角色相关接口"
+                ],
+                "summary": "获取角色列表",
+                "responses": {
+                    "200": {
+                        "description": "角色列表信息",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/response.PageResult"
+                                        },
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/authority/updateAuthority": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "角色相关接口"
+                ],
+                "summary": "修改角色",
+                "parameters": [
+                    {
+                        "description": "角色信息",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.RoleInfo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "更新角色",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/menu/addBaseMenu": {
             "post": {
                 "security": [
@@ -610,6 +802,39 @@ const docTemplate = `{
                 }
             }
         },
+        "model.Role": {
+            "type": "object",
+            "properties": {
+                "CreatedAt": {
+                    "type": "string"
+                },
+                "UpdatedAt": {
+                    "type": "string"
+                },
+                "authorityId": {
+                    "description": "角色编码",
+                    "type": "string"
+                },
+                "authorityName": {
+                    "description": "角色名称",
+                    "type": "string"
+                },
+                "children": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.Role"
+                    }
+                },
+                "defaultRouter": {
+                    "description": "默认菜单(默认dashboard)",
+                    "type": "string"
+                },
+                "parentId": {
+                    "description": "父角色ID",
+                    "type": "string"
+                }
+            }
+        },
         "model.User": {
             "type": "object",
             "properties": {
@@ -716,7 +941,7 @@ const docTemplate = `{
                 },
                 "parentId": {
                     "description": "父ID",
-                    "type": "integer"
+                    "type": "string"
                 },
                 "path": {
                     "description": "路由path",
@@ -799,6 +1024,25 @@ const docTemplate = `{
                 }
             }
         },
+        "request.RoleInfo": {
+            "type": "object",
+            "required": [
+                "authorityId",
+                "authorityName",
+                "parentId"
+            ],
+            "properties": {
+                "authorityId": {
+                    "type": "string"
+                },
+                "authorityName": {
+                    "type": "string"
+                },
+                "parentId": {
+                    "type": "string"
+                }
+            }
+        },
         "response.MenuResult": {
             "type": "object",
             "properties": {
@@ -852,6 +1096,14 @@ const docTemplate = `{
                 },
                 "msg": {
                     "description": "错误信息"
+                }
+            }
+        },
+        "response.RoleResult": {
+            "type": "object",
+            "properties": {
+                "authority": {
+                    "$ref": "#/definitions/model.Role"
                 }
             }
         },
