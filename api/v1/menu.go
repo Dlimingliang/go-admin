@@ -43,7 +43,21 @@ func GetMenuTree(ctx *gin.Context) {
 	if menuList, err := menuService.GetMenuTree(); err != nil {
 		HandlerErr(err, "获取失败", ctx)
 	} else {
+		//为了前端不报错
+		for i := 0; i < len(menuList); i++ {
+			menuTest(&menuList[i])
+		}
 		response.SuccessWithDetailed(response.MenuTree{MenuList: menuList}, "获取成功", ctx)
+	}
+}
+func menuTest(menu *model.Menu) {
+	menu.MenuBtn = []interface{}{}
+	menu.Parameters = []interface{}{}
+	children := menu.Children
+	if len(children) > 0 {
+		for i := 0; i < len(children); i++ {
+			menuTest(&children[i])
+		}
 	}
 }
 

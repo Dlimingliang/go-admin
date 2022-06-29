@@ -7,5 +7,5 @@ type MenuResult struct {
 }
 
 type MenuTree struct {
-	MenuList []model.Menu `json:"menuList"` //菜单树
+	MenuList []model.Menu `json:"menus"` //菜单树
 }
