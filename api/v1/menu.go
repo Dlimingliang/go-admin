@@ -10,7 +10,7 @@ import (
 
 // GetMenuTree
 // @tags 菜单相关接口
-// @summary 获取菜单树接口
+// @summary 获取菜单树
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
@@ -26,7 +26,7 @@ func GetMenuTree(ctx *gin.Context) {
 
 // GetMenuById
 // @tags 菜单相关接口
-// @summary 根据ID获取菜单接口
+// @summary 根据ID获取菜单
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
@@ -49,7 +49,7 @@ func GetMenuById(ctx *gin.Context) {
 
 // CreateMenu
 // @tags 菜单相关接口
-// @summary 新建菜单接口
+// @summary 新增菜单
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
@@ -64,8 +64,10 @@ func CreateMenu(ctx *gin.Context) {
 	}
 
 	createMenu := model.Menu{
-		Name:      req.Name,
-		Icon:      req.Icon,
+		Meta: model.Meta{
+			Name: req.MetaInfo.Name,
+			Icon: req.MetaInfo.Icon,
+		},
 		RoutePath: req.RoutePath,
 		RouteName: req.RouteName,
 		Hidden:    *req.Hidden,
@@ -83,7 +85,7 @@ func CreateMenu(ctx *gin.Context) {
 
 // UpdateMenu
 // @tags 菜单相关接口
-// @summary 更新菜单接口
+// @summary 修改菜单
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
@@ -99,8 +101,10 @@ func UpdateMenu(ctx *gin.Context) {
 
 	updateMenu := model.Menu{
 		BaseModel: model.BaseModel{ID: req.ID},
-		Name:      req.Name,
-		Icon:      req.Icon,
+		Meta: model.Meta{
+			Name: req.MetaInfo.Name,
+			Icon: req.MetaInfo.Icon,
+		},
 		RoutePath: req.RoutePath,
 		RouteName: req.RouteName,
 		Hidden:    *req.Hidden,
@@ -118,7 +122,7 @@ func UpdateMenu(ctx *gin.Context) {
 
 // DeleteMenu
 // @tags 菜单相关接口
-// @summary 删除菜单接口
+// @summary 删除菜单
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json

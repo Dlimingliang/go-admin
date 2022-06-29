@@ -39,7 +39,7 @@ func GetUserList(ctx *gin.Context) {
 
 // RegisterAdmin
 // @tags 用户相关接口
-// @summary 注册管理员接口
+// @summary 注册管理员
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
