@@ -18,7 +18,7 @@ definitions:
         description: 是否在列表隐藏
         type: boolean
       icon:
-        description: 图表
+        description: 图标
         type: string
       name:
         description: 路由名称
@@ -251,7 +251,7 @@ paths:
               type: object
       security:
       - ApiKeyAuth: []
-      summary: 新建菜单接口
+      summary: 新增菜单
       tags:
       - 菜单相关接口
   /menu/deleteBaseMenu:
@@ -279,7 +279,7 @@ paths:
               type: object
       security:
       - ApiKeyAuth: []
-      summary: 删除菜单接口
+      summary: 删除菜单
       tags:
       - 菜单相关接口
   /menu/getBaseMenuById:
@@ -309,10 +309,10 @@ paths:
               type: object
       security:
       - ApiKeyAuth: []
-      summary: 根据ID获取菜单接口
+      summary: 根据ID获取菜单
       tags:
       - 菜单相关接口
-  /menu/getMenu:
+  /menu/getBaseMenuTree:
     post:
       consumes:
       - application/json
@@ -332,7 +332,30 @@ paths:
               type: object
       security:
       - ApiKeyAuth: []
-      summary: 获取菜单树接口
+      summary: 获取菜单树
+      tags:
+      - 菜单相关接口
+  /menu/getMenuList:
+    post:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 菜单列表信息
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/response.PageResult'
+                msg:
+                  type: string
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 获取菜单列表
       tags:
       - 菜单相关接口
   /menu/updateBaseMenu:
@@ -360,7 +383,7 @@ paths:
               type: object
       security:
       - ApiKeyAuth: []
-      summary: 更新菜单接口
+      summary: 修改菜单
       tags:
       - 菜单相关接口
   /user/admin_register:
@@ -388,7 +411,7 @@ paths:
               type: object
       security:
       - ApiKeyAuth: []
-      summary: 注册管理员接口
+      summary: 注册管理员
       tags:
       - 用户相关接口
   /user/deleteUser:

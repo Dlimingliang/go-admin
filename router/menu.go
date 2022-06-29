@@ -15,7 +15,8 @@ func InitMenuRouter(group *gin.RouterGroup) {
 	}
 	menuGroupWithoutRecord := group.Group("menu")
 	{
-		menuGroupWithoutRecord.POST("getMenu", v1.GetMenuTree)
+		menuGroupWithoutRecord.POST("getBaseMenuTree", v1.GetMenuTree)
+		menuGroupWithoutRecord.POST("getMenuList", v1.GetMenuList)
 		menuGroupWithoutRecord.POST("getBaseMenuById", v1.GetMenuById)
 	}
 }

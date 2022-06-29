@@ -1,12 +1,35 @@
 package v1
 
 import (
+	"strconv"
+
 	"github.com/gin-gonic/gin"
 
 	"github.com/Dlimingliang/go-admin/model"
 	"github.com/Dlimingliang/go-admin/model/request"
 	"github.com/Dlimingliang/go-admin/model/response"
 )
+
+// GetMenuList
+// @tags 菜单相关接口
+// @summary 获取菜单列表
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Success 200 {object} response.Response{data=response.PageResult,msg=string} "菜单列表信息"
+// @Router /menu/getMenuList [post]
+func GetMenuList(ctx *gin.Context) {
+	if menuList, err := menuService.GetMenuTree(); err != nil {
+		HandlerErr(err, "获取失败", ctx)
+	} else {
+		response.SuccessWithDetailed(response.PageResult{
+			List:     menuList,
+			Total:    0,
+			Page:     1,
+			PageSize: 999,
+		}, "获取成功", ctx)
+	}
+}
 
 // GetMenuTree
 // @tags 菜单相关接口
@@ -15,7 +38,7 @@ import (
 // @accept application/json
 // @Produce application/json
 // @Success 200 {object} response.Response{data=response.MenuTree,msg=string} "菜单树信息"
-// @Router /menu/getMenu [post]
+// @Router /menu/getBaseMenuTree [post]
 func GetMenuTree(ctx *gin.Context) {
 	if menuList, err := menuService.GetMenuTree(); err != nil {
 		HandlerErr(err, "获取失败", ctx)
@@ -63,6 +86,7 @@ func CreateMenu(ctx *gin.Context) {
 		return
 	}
 
+	parentId, _ := strconv.Atoi(req.ParentId)
 	createMenu := model.Menu{
 		Meta: model.Meta{
 			Name: req.MetaInfo.Name,
@@ -73,7 +97,7 @@ func CreateMenu(ctx *gin.Context) {
 		Hidden:    *req.Hidden,
 		Component: req.Component,
 		Sort:      req.Sort,
-		ParentId:  *req.ParentId,
+		ParentId:  parentId,
 	}
 
 	if menu, err := menuService.CreateMenu(createMenu); err != nil {
@@ -99,6 +123,7 @@ func UpdateMenu(ctx *gin.Context) {
 		return
 	}
 
+	parentId, _ := strconv.Atoi(req.ParentId)
 	updateMenu := model.Menu{
 		BaseModel: model.BaseModel{ID: req.ID},
 		Meta: model.Meta{
@@ -110,7 +135,7 @@ func UpdateMenu(ctx *gin.Context) {
 		Hidden:    *req.Hidden,
 		Component: req.Component,
 		Sort:      req.Sort,
-		ParentId:  *req.ParentId,
+		ParentId:  parentId,
 	}
 
 	if err := menuService.UpdateMenu(updateMenu); err != nil {

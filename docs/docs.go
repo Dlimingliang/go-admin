@@ -32,7 +32,7 @@ const docTemplate = `{
                 "tags": [
                     "菜单相关接口"
                 ],
-                "summary": "新建菜单接口",
+                "summary": "新增菜单",
                 "parameters": [
                     {
                         "description": "菜单信息",
@@ -82,7 +82,7 @@ const docTemplate = `{
                 "tags": [
                     "菜单相关接口"
                 ],
-                "summary": "删除菜单接口",
+                "summary": "删除菜单",
                 "parameters": [
                     {
                         "description": "ID",
@@ -132,7 +132,7 @@ const docTemplate = `{
                 "tags": [
                     "菜单相关接口"
                 ],
-                "summary": "根据ID获取菜单接口",
+                "summary": "根据ID获取菜单",
                 "parameters": [
                     {
                         "description": "ID",
@@ -169,7 +169,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/menu/getMenu": {
+        "/menu/getBaseMenuTree": {
             "post": {
                 "security": [
                     {
@@ -185,7 +185,7 @@ const docTemplate = `{
                 "tags": [
                     "菜单相关接口"
                 ],
-                "summary": "获取菜单树接口",
+                "summary": "获取菜单树",
                 "responses": {
                     "200": {
                         "description": "菜单树信息",
@@ -199,6 +199,48 @@ const docTemplate = `{
                                     "properties": {
                                         "data": {
                                             "$ref": "#/definitions/response.MenuTree"
+                                        },
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/menu/getMenuList": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "菜单相关接口"
+                ],
+                "summary": "获取菜单列表",
+                "responses": {
+                    "200": {
+                        "description": "菜单列表信息",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/response.PageResult"
                                         },
                                         "msg": {
                                             "type": "string"
@@ -227,7 +269,7 @@ const docTemplate = `{
                 "tags": [
                     "菜单相关接口"
                 ],
-                "summary": "更新菜单接口",
+                "summary": "修改菜单",
                 "parameters": [
                     {
                         "description": "菜单信息",
@@ -277,7 +319,7 @@ const docTemplate = `{
                 "tags": [
                     "用户相关接口"
                 ],
-                "summary": "注册管理员接口",
+                "summary": "注册管理员",
                 "parameters": [
                     {
                         "description": "用户名, 昵称, 密码, 角色ID",
@@ -543,7 +585,7 @@ const docTemplate = `{
                     "type": "boolean"
                 },
                 "icon": {
-                    "description": "图表",
+                    "description": "图标",
                     "type": "string"
                 },
                 "name": {

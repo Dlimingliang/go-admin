@@ -7,7 +7,7 @@ type MenuInfo struct {
 	Hidden    *bool  `json:"hidden" binding:"required"`                 // 是否隐藏
 	Component string `json:"component" binding:"required,min=1,max=40"` //前端文件路径
 	Sort      int    `json:"sort" binding:"required,min=1,max=999"`     //排序
-	ParentId  *int   `json:"parentId" binding:"required"`               //父ID
+	ParentId  string `json:"parentId" binding:"required"`               //父ID
 	MetaInfo  `json:"meta"`
 }
 

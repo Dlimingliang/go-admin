@@ -63,7 +63,7 @@ func (menuService *MenuService) UpdateMenu(req model.Menu) error {
 	updateMap["sort"] = req.Sort
 	updateMap["name"] = req.Name
 	updateMap["icon"] = req.Icon
-	return global.GaDb.Updates(updateMap).Error
+	return global.GaDb.Model(&model.Menu{}).Where("id = ?", req.ID).Updates(updateMap).Error
 }
 
 func (menuService *MenuService) DeleteMenu(id int) error {
