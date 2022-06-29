@@ -9,7 +9,7 @@ type Menu struct {
 	Component string `json:"component" gorm:"type:varchar(40);not null;comment:前端文件路径"`              //前端文件路径
 	Sort      int    `json:"sort" gorm:"not null;comment:排序"`                                        //排序
 	ParentId  int    `json:"parent_id" gorm:"column:parent_id;not null;default:0;comment:父菜单ID"`     //父菜单id
-	Children  []Menu `json:"children" gorm:"foreignKey:ParentId"`
+	Children  []Menu `json:"children" gorm:"-"`
 }
 
 type Meta struct {
