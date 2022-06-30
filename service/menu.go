@@ -59,6 +59,14 @@ func (menuService *MenuService) CreateMenu(req model.Menu) (model.Menu, error) {
 	return req, err
 }
 
+func (menuService MenuService) AddMenuAuthority(menus []model.Menu, roleId string) error {
+	var role model.Role
+	role.AuthorityId = roleId
+	role.Menus = menus
+	err := RoleServiceInstance.SetMenuAuthority(role)
+	return err
+}
+
 func (menuService *MenuService) UpdateMenu(req model.Menu) error {
 	updateMap := make(map[string]interface{})
 	updateMap["parent_id"] = req.ParentId

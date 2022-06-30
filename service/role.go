@@ -9,6 +9,8 @@ import (
 type RoleService struct {
 }
 
+var RoleServiceInstance = new(RoleService)
+
 func (roleService *RoleService) GetRoleList() ([]model.Role, error) {
 	var roleList []model.Role
 	err := global.GaDb.Find(&roleList).Error
@@ -48,6 +50,13 @@ func (roleService *RoleService) CreateRole(req model.Role) (model.Role, error) {
 
 func (roleService *RoleService) UpdateRole(req model.Role) error {
 	return global.GaDb.Where("authority_id = ?", req.AuthorityId).Updates(&req).Error
+}
+
+func (roleService *RoleService) SetMenuAuthority(req model.Role) error {
+	var role model.Role
+	global.GaDb.Preload("Menus").First(&role, "authority_id = ?", req.AuthorityId)
+	err := global.GaDb.Model(&role).Association("Menus").Replace(&req.Menus)
+	return err
 }
 
 func (roleService *RoleService) DeleteRole(id string) error {

@@ -9,9 +9,10 @@ import (
 func InitMenuRouter(group *gin.RouterGroup) {
 	menuGroup := group.Group("menu")
 	{
-		menuGroup.POST("addBaseMenu", v1.CreateMenu)    //新建菜单
-		menuGroup.POST("updateBaseMenu", v1.UpdateMenu) //修改菜单
-		menuGroup.POST("deleteBaseMenu", v1.DeleteMenu) //删除菜单
+		menuGroup.POST("addBaseMenu", v1.CreateMenu)            //新建菜单
+		menuGroup.POST("updateBaseMenu", v1.UpdateMenu)         //修改菜单
+		menuGroup.POST("deleteBaseMenu", v1.DeleteMenu)         //删除菜单
+		menuGroup.POST("addMenuAuthority", v1.AddMenuAuthority) //增加角色和菜单关系
 	}
 	menuGroupWithoutRecord := group.Group("menu")
 	{

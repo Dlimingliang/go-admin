@@ -36,6 +36,9 @@ definitions:
         description: 开发中
         items: {}
         type: array
+      menuId:
+        description: 开发中
+        type: string
       name:
         description: 路由名称
         type: string
@@ -102,6 +105,17 @@ definitions:
         type: string
       userName:
         type: string
+    type: object
+  request.AddMenuAuthorityInfo:
+    properties:
+      authorityId:
+        description: 角色ID
+        type: string
+      menus:
+        description: 菜单列表
+        items:
+          $ref: '#/definitions/model.Menu'
+        type: array
     type: object
   request.ById:
     properties:
@@ -438,6 +452,34 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: 新增菜单
+      tags:
+      - 菜单相关接口
+  /menu/addMenuAuthority:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 角色菜单信息
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.AddMenuAuthorityInfo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 更新角色菜单
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 更新角色菜单
       tags:
       - 菜单相关接口
   /menu/deleteBaseMenu:

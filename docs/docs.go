@@ -258,6 +258,56 @@ const docTemplate = `{
                 }
             }
         },
+        "/menu/addMenuAuthority": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "菜单相关接口"
+                ],
+                "summary": "更新角色菜单",
+                "parameters": [
+                    {
+                        "description": "角色菜单信息",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.AddMenuAuthorityInfo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "更新角色菜单",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/menu/deleteBaseMenu": {
             "post": {
                 "security": [
@@ -854,6 +904,10 @@ const docTemplate = `{
                     "type": "array",
                     "items": {}
                 },
+                "menuId": {
+                    "description": "开发中",
+                    "type": "string"
+                },
                 "name": {
                     "description": "路由名称",
                     "type": "string"
@@ -947,6 +1001,22 @@ const docTemplate = `{
                 },
                 "userName": {
                     "type": "string"
+                }
+            }
+        },
+        "request.AddMenuAuthorityInfo": {
+            "type": "object",
+            "properties": {
+                "authorityId": {
+                    "description": "角色ID",
+                    "type": "string"
+                },
+                "menus": {
+                    "description": "菜单列表",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.Menu"
+                    }
                 }
             }
         },

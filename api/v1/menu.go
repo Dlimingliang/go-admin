@@ -151,6 +151,28 @@ func CreateMenu(ctx *gin.Context) {
 	}
 }
 
+// AddMenuAuthority
+// @tags 菜单相关接口
+// @summary 更新角色菜单
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data body request.AddMenuAuthorityInfo true "角色菜单信息"
+// @Success 200 {object} response.Response{msg=string} "更新角色菜单"
+// @Router /menu/addMenuAuthority [post]
+func AddMenuAuthority(ctx *gin.Context) {
+	req := request.AddMenuAuthorityInfo{}
+	if err := ctx.ShouldBind(&req); err != nil {
+		HandlerErr(err, "数据绑定错误", ctx)
+		return
+	}
+	if err := menuService.AddMenuAuthority(req.Menus, req.AuthorityId); err != nil {
+		HandlerErr(err, "添加失败", ctx)
+	} else {
+		response.SuccessWithMessage("添加成功", ctx)
+	}
+}
+
 // UpdateMenu
 // @tags 菜单相关接口
 // @summary 修改菜单
