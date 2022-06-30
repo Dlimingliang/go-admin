@@ -7,10 +7,19 @@ definitions:
         type: integer
       UpdatedAt:
         type: string
+      authoritys:
+        description: 关联角色
+        items:
+          $ref: '#/definitions/model.Role'
+        type: array
       children:
+        description: 子菜单
         items:
           $ref: '#/definitions/model.Menu'
         type: array
+      closeTab:
+        description: 开发中
+        type: boolean
       component:
         description: 前端文件路径
         type: string
@@ -20,10 +29,21 @@ definitions:
       icon:
         description: 图标
         type: string
+      keepAlive:
+        description: 开发中
+        type: boolean
+      menuBtn:
+        description: 开发中
+        items: {}
+        type: array
       name:
         description: 路由名称
         type: string
-      parent_id:
+      parameters:
+        description: 开发中
+        items: {}
+        type: array
+      parentId:
         description: 父菜单id
         type: integer
       path:
@@ -49,12 +69,17 @@ definitions:
         description: 角色名称
         type: string
       children:
+        description: 子角色
         items:
           $ref: '#/definitions/model.Role'
         type: array
       defaultRouter:
         description: 默认菜单(默认dashboard)
         type: string
+      menus:
+        items:
+          $ref: '#/definitions/model.Menu'
+        type: array
       parentId:
         description: 父角色ID
         type: string
@@ -110,6 +135,12 @@ definitions:
         type: string
     required:
     - authorityId
+    type: object
+  request.GetAuthorityId:
+    properties:
+      authorityId:
+        description: 角色ID
+        type: string
     type: object
   request.MenuInfo:
     properties:
@@ -228,7 +259,7 @@ definitions:
     type: object
   response.MenuTree:
     properties:
-      menuList:
+      menus:
         description: 菜单树
         items:
           $ref: '#/definitions/model.Menu'
@@ -488,6 +519,36 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: 获取菜单树
+      tags:
+      - 菜单相关接口
+  /menu/getMenuAuthority:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 角色id
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.GetAuthorityId'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 菜单树信息
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/response.MenuTree'
+                msg:
+                  type: string
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 根据角色获取菜单树
       tags:
       - 菜单相关接口
   /menu/getMenuList:

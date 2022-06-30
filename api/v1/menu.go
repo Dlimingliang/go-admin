@@ -61,6 +61,29 @@ func menuTest(menu *model.Menu) {
 	}
 }
 
+// GetMenuByRole
+// @tags 菜单相关接口
+// @summary 根据角色获取菜单树
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data body request.GetAuthorityId true "角色id"
+// @Success 200 {object} response.Response{data=response.MenuTree,msg=string} "菜单树信息"
+// @Router /menu/getMenuAuthority [post]
+func GetMenuByRole(ctx *gin.Context) {
+	req := request.GetAuthorityId{}
+	if err := ctx.ShouldBind(&req); err != nil {
+		HandlerErr(err, "数据绑定错误", ctx)
+		return
+	}
+
+	if menuList, err := menuService.GetMenuByRole(req.AuthorityId); err != nil {
+		HandlerErr(err, "获取失败", ctx)
+	} else {
+		response.SuccessWithDetailed(response.MenuTree{MenuList: menuList}, "获取成功", ctx)
+	}
+}
+
 // GetMenuById
 // @tags 菜单相关接口
 // @summary 根据ID获取菜单

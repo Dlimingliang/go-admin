@@ -11,7 +11,7 @@ type MenuService struct{}
 func (menuService *MenuService) GetMenuTree() ([]model.Menu, error) {
 	//获取所有菜单
 	var menuList []model.Menu
-	err := global.GaDb.Order("sort, create_time desc").Find(&menuList).Error
+	err := global.GaDb.Order("sort, id").Find(&menuList).Error
 	if err != nil {
 		return menuList, err
 	}
@@ -33,6 +33,12 @@ func setChildrenMenu(menu *model.Menu, menuMap map[int][]model.Menu) {
 	for i := 0; i < len(menu.Children); i++ {
 		setChildrenMenu(&menu.Children[i], menuMap)
 	}
+}
+
+func (menuService MenuService) GetMenuByRole(roleId string) ([]model.Menu, error) {
+	var menuList []model.Menu
+	err := global.GaDb.Model(&model.Menu{}).Select("menu.*").Joins("left join role_menus on role_menus.menu_id = menu.id").Where("role_menus.role_authority_id = ?", roleId).Order("sort,id").Scan(&menuList).Error
+	return menuList, err
 }
 
 func (menuService *MenuService) GetMenuById(id int) (model.Menu, error) {

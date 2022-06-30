@@ -403,6 +403,59 @@ const docTemplate = `{
                 }
             }
         },
+        "/menu/getMenuAuthority": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "菜单相关接口"
+                ],
+                "summary": "根据角色获取菜单树",
+                "parameters": [
+                    {
+                        "description": "角色id",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.GetAuthorityId"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "菜单树信息",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/response.MenuTree"
+                                        },
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/menu/getMenuList": {
             "post": {
                 "security": [
@@ -762,11 +815,23 @@ const docTemplate = `{
                 "UpdatedAt": {
                     "type": "string"
                 },
+                "authoritys": {
+                    "description": "关联角色",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.Role"
+                    }
+                },
                 "children": {
+                    "description": "子菜单",
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/model.Menu"
                     }
+                },
+                "closeTab": {
+                    "description": "开发中",
+                    "type": "boolean"
                 },
                 "component": {
                     "description": "前端文件路径",
@@ -780,11 +845,25 @@ const docTemplate = `{
                     "description": "图标",
                     "type": "string"
                 },
+                "keepAlive": {
+                    "description": "开发中",
+                    "type": "boolean"
+                },
+                "menuBtn": {
+                    "description": "开发中",
+                    "type": "array",
+                    "items": {}
+                },
                 "name": {
                     "description": "路由名称",
                     "type": "string"
                 },
-                "parent_id": {
+                "parameters": {
+                    "description": "开发中",
+                    "type": "array",
+                    "items": {}
+                },
+                "parentId": {
                     "description": "父菜单id",
                     "type": "integer"
                 },
@@ -820,6 +899,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "children": {
+                    "description": "子角色",
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/model.Role"
@@ -828,6 +908,12 @@ const docTemplate = `{
                 "defaultRouter": {
                     "description": "默认菜单(默认dashboard)",
                     "type": "string"
+                },
+                "menus": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.Menu"
+                    }
                 },
                 "parentId": {
                     "description": "父角色ID",
@@ -908,6 +994,15 @@ const docTemplate = `{
             ],
             "properties": {
                 "authorityId": {
+                    "type": "string"
+                }
+            }
+        },
+        "request.GetAuthorityId": {
+            "type": "object",
+            "properties": {
+                "authorityId": {
+                    "description": "角色ID",
                     "type": "string"
                 }
             }
@@ -1066,7 +1161,7 @@ const docTemplate = `{
         "response.MenuTree": {
             "type": "object",
             "properties": {
-                "menuList": {
+                "menus": {
                     "description": "菜单树",
                     "type": "array",
                     "items": {
