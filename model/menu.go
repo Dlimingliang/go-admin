@@ -13,6 +13,7 @@ type Menu struct {
 	Roles      []Role        `json:"authoritys" gorm:"many2many:role_menus;"`                                //关联角色
 	Parameters []interface{} `json:"parameters" gorm:"-"`                                                    //开发中
 	MenuBtn    []interface{} `json:"menuBtn" gorm:"-"`                                                       //开发中
+	MenuId     string        `json:"menuId" gorm:"-"`                                                        //开发中
 }
 
 type Meta struct {

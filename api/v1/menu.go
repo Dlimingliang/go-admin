@@ -80,8 +80,15 @@ func GetMenuByRole(ctx *gin.Context) {
 	if menuList, err := menuService.GetMenuByRole(req.AuthorityId); err != nil {
 		HandlerErr(err, "获取失败", ctx)
 	} else {
+		for i := 0; i < len(menuList); i++ {
+			menuByRoleTest(&menuList[i])
+		}
 		response.SuccessWithDetailed(response.MenuTree{MenuList: menuList}, "获取成功", ctx)
 	}
+}
+
+func menuByRoleTest(menu *model.Menu) {
+	menu.MenuId = strconv.Itoa(menu.ID)
 }
 
 // GetMenuById
