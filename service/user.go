@@ -20,7 +20,7 @@ func (userService *UserService) GetUserList(page request.PageInfo) ([]model.User
 	}
 
 	var userList []model.User
-	err = db.Scopes(Paginate(page.Page, page.PageSize)).Find(&userList).Error
+	err = db.Scopes(Paginate(page.Page, page.PageSize)).Preload("Roles").Find(&userList).Error
 	return userList, total, err
 }
 

@@ -17,5 +17,6 @@ type Role struct {
 	ParentId      string                `json:"parentId" gorm:"column:parent_id;type:varchar(10);not null;comment:父角色ID"`                 //父角色ID
 	DefaultRouter string                `json:"defaultRouter" gorm:"comment:默认菜单;default:dashboard"`                                      // 默认菜单(默认dashboard)
 	Children      []Role                `json:"children" gorm:"-"`                                                                        //子角色
+	Users         []User                `json:"-" gorm:"many2many:user_roles;"`
 	Menus         []Menu                `json:"menus" gorm:"many2many:role_menus;"`
 }
