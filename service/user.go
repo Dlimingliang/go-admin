@@ -59,5 +59,5 @@ func (userService *UserService) ResetPassword(id int) error {
 	if err != nil {
 		return err
 	}
-	return global.GaDb.Updates(&model.User{BaseModel: model.BaseModel{ID: id}, Password: hashPassword}).Error
+	return global.GaDb.Updates(&model.User{BaseModelNoDelete: model.BaseModelNoDelete{ID: id}, Password: hashPassword}).Error
 }

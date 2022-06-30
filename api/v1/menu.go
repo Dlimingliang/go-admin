@@ -191,7 +191,7 @@ func UpdateMenu(ctx *gin.Context) {
 
 	parentId, _ := strconv.Atoi(req.ParentId)
 	updateMenu := model.Menu{
-		BaseModel: model.BaseModel{ID: req.ID},
+		BaseModelNoDelete: model.BaseModelNoDelete{ID: req.ID},
 		Meta: model.Meta{
 			Name: req.MetaInfo.Name,
 			Icon: req.MetaInfo.Icon,

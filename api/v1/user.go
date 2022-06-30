@@ -85,7 +85,7 @@ func SetUserInfo(ctx *gin.Context) {
 	}
 
 	user := model.User{
-		BaseModel: model.BaseModel{
+		BaseModelNoDelete: model.BaseModelNoDelete{
 			ID: changeUserInfo.ID,
 		},
 		Mobile:    changeUserInfo.Mobile,
