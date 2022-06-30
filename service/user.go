@@ -50,6 +50,20 @@ func (userService *UserService) SetUserInfo(user model.User) error {
 	return global.GaDb.Updates(&user).Error
 }
 
+func (userService *UserService) SetUserAuthorities(id int, authorityIds []string) error {
+	var user model.User
+	if err := global.GaDb.Preload("Roles").First(&user, id).Error; err != nil {
+		return err
+	}
+	//更换角色
+	roles := make([]model.Role, 0)
+	for _, authorityId := range authorityIds {
+		roles = append(roles, model.Role{AuthorityId: authorityId})
+	}
+	err := global.GaDb.Model(&user).Association("Roles").Replace(&roles)
+	return err
+}
+
 func (userService *UserService) DeleteUser(id int) error {
 	return global.GaDb.Delete(&model.User{}, id).Error
 }

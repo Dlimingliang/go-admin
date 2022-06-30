@@ -61,6 +61,11 @@ func RegisterAdmin(ctx *gin.Context) {
 		Email:     register.Email,
 		HeaderImg: register.HeaderImg,
 	}
+
+	for _, id := range register.AuthorityIds {
+		createUser.Roles = append(createUser.Roles, model.Role{AuthorityId: id})
+	}
+
 	if user, err := userService.RegisterAdmin(createUser); err != nil {
 		HandlerErr(err, "注册失败", ctx)
 	} else {
@@ -82,6 +87,13 @@ func SetUserInfo(ctx *gin.Context) {
 	if err := ctx.ShouldBind(&changeUserInfo); err != nil {
 		HandlerErr(err, "数据绑定错误", ctx)
 		return
+	}
+
+	if len(changeUserInfo.AuthorityIds) > 0 {
+		err := userService.SetUserAuthorities(changeUserInfo.ID, changeUserInfo.AuthorityIds)
+		if err != nil {
+			HandlerErr(err, "更新失败", ctx)
+		}
 	}
 
 	user := model.User{
