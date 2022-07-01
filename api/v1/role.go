@@ -8,6 +8,8 @@ import (
 	"github.com/Dlimingliang/go-admin/model/response"
 )
 
+type RoleApi struct{}
+
 // GetRoleList
 // @tags 角色相关接口
 // @summary 获取角色列表
@@ -16,7 +18,7 @@ import (
 // @Produce application/json
 // @Success 200 {object} response.Response{data=response.PageResult,msg=string} "角色列表信息"
 // @Router /authority/getAuthorityList [post]
-func GetRoleList(ctx *gin.Context) {
+func (roleApi *RoleApi) GetRoleList(ctx *gin.Context) {
 	if roleList, err := roleService.GetRoleList(); err != nil {
 		HandlerErr(err, "获取失败", ctx)
 	} else {
@@ -38,7 +40,7 @@ func GetRoleList(ctx *gin.Context) {
 // @Param data body request.RoleInfo true "角色信息"
 // @Success 200 {object} response.Response{data=response.RoleResult} "角色信息"
 // @Router /authority/createAuthority [post]
-func CreateRole(ctx *gin.Context) {
+func (roleApi *RoleApi) CreateRole(ctx *gin.Context) {
 	req := request.RoleInfo{}
 	if err := ctx.ShouldBind(&req); err != nil {
 		HandlerErr(err, "数据绑定错误", ctx)
@@ -66,7 +68,7 @@ func CreateRole(ctx *gin.Context) {
 // @Param data body request.RoleInfo true "角色信息"
 // @Success 200 {object} response.Response{msg=string} "更新角色"
 // @Router /authority/updateAuthority [post]
-func UpdateRole(ctx *gin.Context) {
+func (roleApi *RoleApi) UpdateRole(ctx *gin.Context) {
 	req := request.RoleInfo{}
 	if err := ctx.ShouldBind(&req); err != nil {
 		HandlerErr(err, "数据绑定错误", ctx)
@@ -95,7 +97,7 @@ func UpdateRole(ctx *gin.Context) {
 // @Param data body request.DeleteRole true "角色信息"
 // @Success 200 {object} response.Response{msg=string} "删除角色"
 // @Router /authority/deleteAuthority [post]
-func DeleteRole(ctx *gin.Context) {
+func (roleApi *RoleApi) DeleteRole(ctx *gin.Context) {
 	reqId := request.DeleteRole{}
 	if err := ctx.ShouldBind(&reqId); err != nil {
 		HandlerErr(err, "数据绑定错误", ctx)

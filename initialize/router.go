@@ -31,9 +31,12 @@ func InitRouters() *gin.Engine {
 		MaxAge:           12 * time.Hour,
 	}))
 
-	apiGroup := ginRouter.Group("")
-	router.InitUserRouter(apiGroup)
-	router.InitMenuRouter(apiGroup)
-	router.InitRoleRouter(apiGroup)
+	systemRouterGroup := router.GroupApp
+	//PublicApiGroup := ginRouter.Group("")
+
+	PrivateApiGroup := ginRouter.Group("")
+	systemRouterGroup.InitMenuRouter(PrivateApiGroup)
+	systemRouterGroup.InitRoleRouter(PrivateApiGroup)
+	systemRouterGroup.InitUserRouter(PrivateApiGroup)
 	return ginRouter
 }

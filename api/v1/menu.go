@@ -10,6 +10,8 @@ import (
 	"github.com/Dlimingliang/go-admin/model/response"
 )
 
+type MenuApi struct{}
+
 // GetMenuList
 // @tags 菜单相关接口
 // @summary 获取菜单列表
@@ -18,7 +20,7 @@ import (
 // @Produce application/json
 // @Success 200 {object} response.Response{data=response.PageResult,msg=string} "菜单列表信息"
 // @Router /menu/getMenuList [post]
-func GetMenuList(ctx *gin.Context) {
+func (menuApi *MenuApi) GetMenuList(ctx *gin.Context) {
 	if menuList, err := menuService.GetMenuTree(); err != nil {
 		HandlerErr(err, "获取失败", ctx)
 	} else {
@@ -39,7 +41,7 @@ func GetMenuList(ctx *gin.Context) {
 // @Produce application/json
 // @Success 200 {object} response.Response{data=response.MenuTree,msg=string} "菜单树信息"
 // @Router /menu/getBaseMenuTree [post]
-func GetMenuTree(ctx *gin.Context) {
+func (menuApi *MenuApi) GetMenuTree(ctx *gin.Context) {
 	if menuList, err := menuService.GetMenuTree(); err != nil {
 		HandlerErr(err, "获取失败", ctx)
 	} else {
@@ -70,7 +72,7 @@ func menuTest(menu *model.Menu) {
 // @Param data body request.GetAuthorityId true "角色id"
 // @Success 200 {object} response.Response{data=response.MenuTree,msg=string} "菜单树信息"
 // @Router /menu/getMenuAuthority [post]
-func GetMenuByRole(ctx *gin.Context) {
+func (menuApi *MenuApi) GetMenuByRole(ctx *gin.Context) {
 	req := request.GetAuthorityId{}
 	if err := ctx.ShouldBind(&req); err != nil {
 		HandlerErr(err, "数据绑定错误", ctx)
@@ -100,7 +102,7 @@ func menuByRoleTest(menu *model.Menu) {
 // @Param data body request.ById true "ID"
 // @Success 200 {object} response.Response{data=response.MenuResult,msg=string} "菜单信息"
 // @Router /menu/getBaseMenuById [post]
-func GetMenuById(ctx *gin.Context) {
+func (menuApi *MenuApi) GetMenuById(ctx *gin.Context) {
 	reqId := request.ById{}
 	if err := ctx.ShouldBind(&reqId); err != nil {
 		HandlerErr(err, "数据绑定错误", ctx)
@@ -123,7 +125,7 @@ func GetMenuById(ctx *gin.Context) {
 // @Param data body request.MenuInfo true "菜单信息"
 // @Success 200 {object} response.Response{data=response.MenuResult} "菜单信息"
 // @Router /menu/addBaseMenu [post]
-func CreateMenu(ctx *gin.Context) {
+func (menuApi *MenuApi) CreateMenu(ctx *gin.Context) {
 	req := request.MenuInfo{}
 	if err := ctx.ShouldBind(&req); err != nil {
 		HandlerErr(err, "数据绑定错误", ctx)
@@ -160,7 +162,7 @@ func CreateMenu(ctx *gin.Context) {
 // @Param data body request.AddMenuAuthorityInfo true "角色菜单信息"
 // @Success 200 {object} response.Response{msg=string} "更新角色菜单"
 // @Router /menu/addMenuAuthority [post]
-func AddMenuAuthority(ctx *gin.Context) {
+func (menuApi *MenuApi) AddMenuAuthority(ctx *gin.Context) {
 	req := request.AddMenuAuthorityInfo{}
 	if err := ctx.ShouldBind(&req); err != nil {
 		HandlerErr(err, "数据绑定错误", ctx)
@@ -182,7 +184,7 @@ func AddMenuAuthority(ctx *gin.Context) {
 // @Param data body request.MenuInfo true "菜单信息"
 // @Success 200 {object} response.Response{msg=string} "更新菜单"
 // @Router /menu/updateBaseMenu [post]
-func UpdateMenu(ctx *gin.Context) {
+func (menuApi *MenuApi) UpdateMenu(ctx *gin.Context) {
 	req := request.MenuInfo{}
 	if err := ctx.ShouldBind(&req); err != nil {
 		HandlerErr(err, "数据绑定错误", ctx)
@@ -220,7 +222,7 @@ func UpdateMenu(ctx *gin.Context) {
 // @Param data body request.ById true "ID"
 // @Success 200 {object} response.Response{msg=string} "删除菜单"
 // @Router /menu/deleteBaseMenu [post]
-func DeleteMenu(ctx *gin.Context) {
+func (menuApi *MenuApi) DeleteMenu(ctx *gin.Context) {
 	reqId := request.ById{}
 	if err := ctx.ShouldBind(&reqId); err != nil {
 		HandlerErr(err, "数据绑定错误", ctx)

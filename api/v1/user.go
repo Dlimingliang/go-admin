@@ -8,6 +8,8 @@ import (
 	"github.com/Dlimingliang/go-admin/model/response"
 )
 
+type UserApi struct{}
+
 // GetUserList
 // @tags 用户相关接口
 // @summary 分页获取用户列表
@@ -17,7 +19,7 @@ import (
 // @Param data body request.PageInfo true "页码, 每页大小"
 // @Success 200 {object} response.Response{data=response.PageResult,msg=string} "分页获取用户列表,返回包括列表,总数,页码,每页数量"
 // @Router /user/getUserList [post]
-func GetUserList(ctx *gin.Context) {
+func (userApi *UserApi) GetUserList(ctx *gin.Context) {
 
 	pageInfo := request.PageInfo{}
 	if err := ctx.ShouldBind(&pageInfo); err != nil {
@@ -46,7 +48,7 @@ func GetUserList(ctx *gin.Context) {
 // @Param data body request.Register true "用户名, 昵称, 密码, 角色ID"
 // @Success 200 {object} response.Response{data=response.UserResult} "用户注册账号,返回包括用户信息"
 // @Router /user/admin_register [post]
-func RegisterAdmin(ctx *gin.Context) {
+func (userApi *UserApi) RegisterAdmin(ctx *gin.Context) {
 	register := request.Register{}
 	if err := ctx.ShouldBind(&register); err != nil {
 		HandlerErr(err, "数据绑定错误", ctx)
@@ -82,7 +84,7 @@ func RegisterAdmin(ctx *gin.Context) {
 // @Param data body request.ChangeUserInfo true "ID, 用户名, 昵称, 头像链接"
 // @Success 200 {object} response.Response{msg=string} "修改管理员信息"
 // @Router /user/setUserInfo [put]
-func SetUserInfo(ctx *gin.Context) {
+func (userApi *UserApi) SetUserInfo(ctx *gin.Context) {
 	changeUserInfo := request.ChangeUserInfo{}
 	if err := ctx.ShouldBind(&changeUserInfo); err != nil {
 		HandlerErr(err, "数据绑定错误", ctx)
@@ -121,7 +123,7 @@ func SetUserInfo(ctx *gin.Context) {
 // @Param data body request.SetUserAuthorities true "修改管理员角色"
 // @Success 200 {object} response.Response{msg=string} "修改管理员角色"
 // @Router /user/setUserAuthorities [post]
-func SetUserAuthorities(ctx *gin.Context) {
+func (userApi *UserApi) SetUserAuthorities(ctx *gin.Context) {
 	var req request.SetUserAuthorities
 	if err := ctx.ShouldBind(&req); err != nil {
 		HandlerErr(err, "数据绑定错误", ctx)
@@ -145,7 +147,7 @@ func SetUserAuthorities(ctx *gin.Context) {
 // @Param data body request.ById true "ID"
 // @Success 200 {object} response.Response{msg=string} "重置密码"
 // @Router /user/resetPassword [post]
-func ResetPassword(ctx *gin.Context) {
+func (userApi *UserApi) ResetPassword(ctx *gin.Context) {
 	reqId := request.ById{}
 	if err := ctx.ShouldBind(&reqId); err != nil {
 		HandlerErr(err, "数据绑定错误", ctx)
@@ -168,7 +170,7 @@ func ResetPassword(ctx *gin.Context) {
 // @Param data body request.ById true "ID"
 // @Success 200 {object} response.Response{msg=string} "删除用户"
 // @Router /user/deleteUser [delete]
-func DeleteUser(ctx *gin.Context) {
+func (userApi *UserApi) DeleteUser(ctx *gin.Context) {
 	reqId := request.ById{}
 	if err := ctx.ShouldBind(&reqId); err != nil {
 		HandlerErr(err, "数据绑定错误", ctx)
