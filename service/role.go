@@ -37,10 +37,17 @@ func setChildrenRole(role *model.Role, roleMap map[string][]model.Role) {
 
 func (roleService *RoleService) CreateRole(req model.Role) (model.Role, error) {
 	var role model.Role
-	if result := global.GaDb.Where("authority_id = ?", req.AuthorityId).First(&role); result.RowsAffected > 0 {
+	if err := global.GaDb.Where("authority_id = ?", req.AuthorityId).First(&role).Error; err != nil {
+		return role, err
+	}
+	if &role != nil {
 		return role, business.New("该角色code已存在")
 	}
-	if result := global.GaDb.Where("authority_name = ?", req.AuthorityName).First(&role); result.RowsAffected > 0 {
+
+	if err := global.GaDb.Where("authority_name = ?", req.AuthorityName).First(&role).Error; err != nil {
+		return role, err
+	}
+	if &role != nil {
 		return role, business.New("该角色名称已存在")
 	}
 
@@ -60,8 +67,29 @@ func (roleService *RoleService) SetMenuAuthority(req model.Role) error {
 }
 
 func (roleService *RoleService) DeleteRole(id string) error {
-	if result := global.GaDb.Where("parent_id = ?", id).First(&model.Role{}); result.RowsAffected > 0 {
-		return business.New("此角色存在子角色不可删除")
+	//如果有用户绑定，不可以进行删除
+	var roleUser model.Role
+	if err := global.GaDb.Preload("Users").Where("id = ?", id).First(&roleUser).Error; err != nil {
+		return err
 	}
-	return global.GaDb.Where("authority_id = ?", id).Delete(&model.Role{}).Error
+	if len(roleUser.Users) != 0 {
+		return business.New("此角色有用户正在使用禁止删除")
+	}
+
+	//如果有子角色不可以删除
+	var existRole model.Role
+	if err := global.GaDb.Where("parent_id = ?", id).First(&existRole).Error; err != nil {
+		return err
+	}
+	if &existRole != nil {
+		return business.New("此角色存在子角色不允许删除")
+	}
+	//删除角色
+	var role model.Role
+	err := global.GaDb.Preload("Menus").Where("authority_id = ?", id).First(&role).Delete(&role).Error
+	if len(role.Menus) > 0 {
+		err = global.GaDb.Model(&role).Association("menus").Delete(&role.Menus)
+	}
+	//删除角色菜单
+	return err
 }

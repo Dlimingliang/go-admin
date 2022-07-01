@@ -51,9 +51,14 @@ func (menuService *MenuService) CreateMenu(req model.Menu) (model.Menu, error) {
 
 	var menu model.Menu
 	//验证菜单名称重复
-	if result := global.GaDb.Where("name = ?", req.Meta.Name).First(&menu); result.RowsAffected > 0 {
-		return menu, business.New("该菜单名称已存在")
+	if err := global.GaDb.Where("name = ?", req.Meta.Name).First(&menu).Error; err != nil {
+		return menu, err
 	}
+
+	if &menu != nil {
+		return menu, business.New("已存在同名菜单")
+	}
+
 	//创建菜单
 	err := global.GaDb.Create(&req).Error
 	return req, err
@@ -68,6 +73,17 @@ func (menuService MenuService) AddMenuAuthority(menus []model.Menu, roleId strin
 }
 
 func (menuService *MenuService) UpdateMenu(req model.Menu) error {
+	//判断菜单名称是否重复
+	var dbMenu model.Menu
+	//验证菜单名称重复
+	if err := global.GaDb.Where("id <> ? AND name = ?", req.ID, req.Meta.Name).First(&dbMenu).Error; err != nil {
+		return err
+	}
+
+	if &dbMenu != nil {
+		return business.New("已存在同名菜单")
+	}
+
 	updateMap := make(map[string]interface{})
 	updateMap["parent_id"] = req.ParentId
 	updateMap["route_path"] = req.RoutePath
@@ -85,5 +101,10 @@ func (menuService *MenuService) DeleteMenu(id int) error {
 		return business.New("此菜单存在子菜单不可删除")
 	}
 	//删除菜单及关联的角色
-	return global.GaDb.Delete(&model.Menu{}, id).Error
+	var menu model.Menu
+	err := global.GaDb.Preload("Roles").Where("id = ?", id).First(&menu).Delete(&menu).Error
+	if len(menu.Roles) > 0 {
+		err = global.GaDb.Model(&menu).Association("Roles").Delete(&menu.Roles)
+	}
+	return err
 }
