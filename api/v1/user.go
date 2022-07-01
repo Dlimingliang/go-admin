@@ -112,6 +112,30 @@ func SetUserInfo(ctx *gin.Context) {
 	}
 }
 
+// SetUserInfo
+// @tags 用户相关接口
+// @summary 修改管理员角色
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data body request.SetUserAuthorities true "修改管理员角色"
+// @Success 200 {object} response.Response{msg=string} "修改管理员角色"
+// @Router /user/setUserAuthorities [post]
+func SetUserAuthorities(ctx *gin.Context) {
+	var req request.SetUserAuthorities
+	if err := ctx.ShouldBind(&req); err != nil {
+		HandlerErr(err, "数据绑定错误", ctx)
+		return
+	}
+
+	if err := userService.SetUserAuthorities(req.ID, req.AuthorityIds); err != nil {
+		HandlerErr(err, "更新失败", ctx)
+	} else {
+		response.SuccessWithMessage("更新成功", ctx)
+	}
+
+}
+
 // ResetPassword
 // @tags 用户相关接口
 // @summary 重置密码

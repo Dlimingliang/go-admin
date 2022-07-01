@@ -18,3 +18,8 @@ type ChangeUserInfo struct {
 	HeaderImg    string   `json:"headerImg"`    //头像
 	AuthorityIds []string `json:"authorityIds"` // 角色ID
 }
+
+type SetUserAuthorities struct {
+	ID           int      `json:"ID"`
+	AuthorityIds []string `json:"authorityIds"` // 角色ID
+}
