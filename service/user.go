@@ -65,7 +65,12 @@ func (userService *UserService) SetUserAuthorities(id int, authorityIds []string
 }
 
 func (userService *UserService) DeleteUser(id int) error {
-	return global.GaDb.Delete(&model.User{}, id).Error
+	err := global.GaDb.Delete(&model.User{}, id).Error
+	if err != nil {
+		return err
+	}
+	err = global.GaDb.Delete(&model.UserRole{}, "user_id = ?", id).Error
+	return err
 }
 
 func (userService *UserService) ResetPassword(id int) error {
