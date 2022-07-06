@@ -15,7 +15,7 @@
 1. 数据库 mysql
 2. 缓存 redis
 
-#### 接口返回设计
+#### 接口返回
 
 API接口的响应为JSON格式，并且会响应不同的HTTP status code
 
