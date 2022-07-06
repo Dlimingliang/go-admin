@@ -41,7 +41,7 @@ func (roleApi *RoleApi) GetRoleList(ctx *gin.Context) {
 // @Success 200 {object} response.Response{data=response.RoleResult} "角色信息"
 // @Router /authority/createAuthority [post]
 func (roleApi *RoleApi) CreateRole(ctx *gin.Context) {
-	req := request.RoleInfo{}
+	var req request.RoleInfo
 	if err := ctx.ShouldBind(&req); err != nil {
 		HandlerErr(err, "数据绑定错误", ctx)
 		return
@@ -69,7 +69,7 @@ func (roleApi *RoleApi) CreateRole(ctx *gin.Context) {
 // @Success 200 {object} response.Response{msg=string} "更新角色"
 // @Router /authority/updateAuthority [post]
 func (roleApi *RoleApi) UpdateRole(ctx *gin.Context) {
-	req := request.RoleInfo{}
+	var req request.RoleInfo
 	if err := ctx.ShouldBind(&req); err != nil {
 		HandlerErr(err, "数据绑定错误", ctx)
 		return
@@ -98,7 +98,7 @@ func (roleApi *RoleApi) UpdateRole(ctx *gin.Context) {
 // @Success 200 {object} response.Response{msg=string} "删除角色"
 // @Router /authority/deleteAuthority [post]
 func (roleApi *RoleApi) DeleteRole(ctx *gin.Context) {
-	reqId := request.DeleteRole{}
+	var reqId request.DeleteRole
 	if err := ctx.ShouldBind(&reqId); err != nil {
 		HandlerErr(err, "数据绑定错误", ctx)
 		return

@@ -1,6 +1,10 @@
 package service
 
 import (
+	"errors"
+
+	"gorm.io/gorm"
+
 	"github.com/Dlimingliang/go-admin/core/business"
 	"github.com/Dlimingliang/go-admin/global"
 	"github.com/Dlimingliang/go-admin/model"
@@ -37,17 +41,19 @@ func setChildrenRole(role *model.Role, roleMap map[string][]model.Role) {
 
 func (roleService *RoleService) CreateRole(req model.Role) (model.Role, error) {
 	var role model.Role
-	if err := global.GaDb.Where("authority_id = ?", req.AuthorityId).First(&role).Error; err != nil {
-		return role, err
+	res := global.GaDb.Where("authority_id = ?", req.AuthorityId).First(&role)
+	if res.Error != nil && !errors.Is(res.Error, gorm.ErrRecordNotFound) {
+		return role, res.Error
 	}
-	if &role != nil {
+	if res.RowsAffected > 0 {
 		return role, business.New("该角色code已存在")
 	}
 
-	if err := global.GaDb.Where("authority_name = ?", req.AuthorityName).First(&role).Error; err != nil {
-		return role, err
+	res = global.GaDb.Where("authority_name = ?", req.AuthorityName).First(&role)
+	if res.Error != nil && !errors.Is(res.Error, gorm.ErrRecordNotFound) {
+		return role, res.Error
 	}
-	if &role != nil {
+	if res.RowsAffected > 0 {
 		return role, business.New("该角色名称已存在")
 	}
 
@@ -69,8 +75,9 @@ func (roleService *RoleService) SetMenuAuthority(req model.Role) error {
 func (roleService *RoleService) DeleteRole(id string) error {
 	//如果有用户绑定，不可以进行删除
 	var roleUser model.Role
-	if err := global.GaDb.Preload("Users").Where("authority_id = ?", id).First(&roleUser).Error; err != nil {
-		return err
+	res := global.GaDb.Preload("Users").Where("authority_id = ?", id).First(&roleUser)
+	if res.Error != nil && !errors.Is(res.Error, gorm.ErrRecordNotFound) {
+		return res.Error
 	}
 	if len(roleUser.Users) != 0 {
 		return business.New("此角色有用户正在使用禁止删除")
@@ -84,12 +91,12 @@ func (roleService *RoleService) DeleteRole(id string) error {
 	if len(existSubRoles) > 0 {
 		return business.New("此角色存在子角色不允许删除")
 	}
+
 	//删除角色
 	var role model.Role
 	err := global.GaDb.Preload("Menus").Where("authority_id = ?", id).First(&role).Delete(&role).Error
 	if len(role.Menus) > 0 {
 		err = global.GaDb.Model(&role).Association("Menus").Delete(&role.Menus)
 	}
-	//删除角色菜单
 	return err
 }

@@ -1,11 +1,13 @@
 package service
 
 import (
+	"errors"
 	"github.com/Dlimingliang/go-admin/core/business"
 	"github.com/Dlimingliang/go-admin/global"
 	"github.com/Dlimingliang/go-admin/model"
 	"github.com/Dlimingliang/go-admin/model/request"
 	"github.com/Dlimingliang/go-admin/utils"
+	"gorm.io/gorm"
 )
 
 type UserService struct{}
@@ -28,10 +30,19 @@ func (userService *UserService) RegisterAdmin(req model.User) (model.User, error
 
 	var user model.User
 	//验证用户和电话是否存在
-	if result := global.GaDb.Where(&model.User{Username: req.Username}).First(&user); result.RowsAffected > 0 {
+	res := global.GaDb.Where(&model.User{Username: req.Username}).First(&user)
+	if res.Error != nil && !errors.Is(res.Error, gorm.ErrRecordNotFound) {
+		return user, res.Error
+	}
+	if res.RowsAffected > 0 {
 		return user, business.New("该用户名已存在")
 	}
-	if result := global.GaDb.Where(&model.User{Mobile: req.Mobile}).First(&user); result.RowsAffected > 0 {
+
+	res = global.GaDb.Where(&model.User{Mobile: req.Mobile}).First(&user)
+	if res.Error != nil && !errors.Is(res.Error, gorm.ErrRecordNotFound) {
+		return user, res.Error
+	}
+	if res.RowsAffected > 0 {
 		return user, business.New("该电话已存在")
 	}
 

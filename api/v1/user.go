@@ -21,7 +21,7 @@ type UserApi struct{}
 // @Router /user/getUserList [post]
 func (userApi *UserApi) GetUserList(ctx *gin.Context) {
 
-	pageInfo := request.PageInfo{}
+	var pageInfo request.PageInfo
 	if err := ctx.ShouldBind(&pageInfo); err != nil {
 		HandlerErr(err, "数据绑定错误", ctx)
 		return
@@ -49,7 +49,7 @@ func (userApi *UserApi) GetUserList(ctx *gin.Context) {
 // @Success 200 {object} response.Response{data=response.UserResult} "用户注册账号,返回包括用户信息"
 // @Router /user/admin_register [post]
 func (userApi *UserApi) RegisterAdmin(ctx *gin.Context) {
-	register := request.Register{}
+	var register request.Register
 	if err := ctx.ShouldBind(&register); err != nil {
 		HandlerErr(err, "数据绑定错误", ctx)
 		return
@@ -85,7 +85,7 @@ func (userApi *UserApi) RegisterAdmin(ctx *gin.Context) {
 // @Success 200 {object} response.Response{msg=string} "修改管理员信息"
 // @Router /user/setUserInfo [put]
 func (userApi *UserApi) SetUserInfo(ctx *gin.Context) {
-	changeUserInfo := request.ChangeUserInfo{}
+	var changeUserInfo request.ChangeUserInfo
 	if err := ctx.ShouldBind(&changeUserInfo); err != nil {
 		HandlerErr(err, "数据绑定错误", ctx)
 		return
@@ -148,7 +148,7 @@ func (userApi *UserApi) SetUserAuthorities(ctx *gin.Context) {
 // @Success 200 {object} response.Response{msg=string} "重置密码"
 // @Router /user/resetPassword [post]
 func (userApi *UserApi) ResetPassword(ctx *gin.Context) {
-	reqId := request.ById{}
+	var reqId request.ById
 	if err := ctx.ShouldBind(&reqId); err != nil {
 		HandlerErr(err, "数据绑定错误", ctx)
 		return
@@ -171,7 +171,7 @@ func (userApi *UserApi) ResetPassword(ctx *gin.Context) {
 // @Success 200 {object} response.Response{msg=string} "删除用户"
 // @Router /user/deleteUser [delete]
 func (userApi *UserApi) DeleteUser(ctx *gin.Context) {
-	reqId := request.ById{}
+	var reqId request.ById
 	if err := ctx.ShouldBind(&reqId); err != nil {
 		HandlerErr(err, "数据绑定错误", ctx)
 		return

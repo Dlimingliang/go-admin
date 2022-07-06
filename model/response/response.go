@@ -19,7 +19,7 @@ const (
 type Response struct {
 	Code          int         `json:"code"`          //编码 本来是string，但是由于已经这么设计了，没办法
 	Msg           string      `json:"msg"`           //错误信息
-	ValidationMsg interface{} `json:"validationMsg"` //信息
+	ValidationMsg interface{} `json:"validationMsg"` //参数校验信息
 	Data          interface{} `json:"data"`          //数据
 }
 
