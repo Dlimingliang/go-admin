@@ -69,7 +69,7 @@ func (roleService *RoleService) SetMenuAuthority(req model.Role) error {
 func (roleService *RoleService) DeleteRole(id string) error {
 	//如果有用户绑定，不可以进行删除
 	var roleUser model.Role
-	if err := global.GaDb.Preload("Users").Where("id = ?", id).First(&roleUser).Error; err != nil {
+	if err := global.GaDb.Preload("Users").Where("authority_id = ?", id).First(&roleUser).Error; err != nil {
 		return err
 	}
 	if len(roleUser.Users) != 0 {
@@ -77,18 +77,18 @@ func (roleService *RoleService) DeleteRole(id string) error {
 	}
 
 	//如果有子角色不可以删除
-	var existRole model.Role
-	if err := global.GaDb.Where("parent_id = ?", id).First(&existRole).Error; err != nil {
+	var existSubRoles []model.Role
+	if err := global.GaDb.Where("parent_id = ?", id).Find(&existSubRoles).Error; err != nil {
 		return err
 	}
-	if &existRole != nil {
+	if len(existSubRoles) > 0 {
 		return business.New("此角色存在子角色不允许删除")
 	}
 	//删除角色
 	var role model.Role
 	err := global.GaDb.Preload("Menus").Where("authority_id = ?", id).First(&role).Delete(&role).Error
 	if len(role.Menus) > 0 {
-		err = global.GaDb.Model(&role).Association("menus").Delete(&role.Menus)
+		err = global.GaDb.Model(&role).Association("Menus").Delete(&role.Menus)
 	}
 	//删除角色菜单
 	return err
