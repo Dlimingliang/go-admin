@@ -7,17 +7,23 @@ import (
 )
 
 const (
-	BusinessError = 7
-	Ok            = 0
+	Ok = 0
+)
+
+const (
+	ValidationErrorCode         = 300
+	BusinessValidationErrorCode = 301
+	InternalErrorCode           = 399
 )
 
 type Response struct {
-	Code int         `json:"code"` //编码
-	Msg  interface{} `json:"msg"`  //错误信息
-	Data interface{} `json:"data"` //数据
+	Code          int         `json:"code"`          //编码 本来是string，但是由于已经这么设计了，没办法
+	Msg           string      `json:"msg"`           //错误信息
+	ValidationMsg interface{} `json:"validationMsg"` //信息
+	Data          interface{} `json:"data"`          //数据
 }
 
-func ReturnResultWithHttpCode(httpCode int, code int, data interface{}, msg interface{}, ctx *gin.Context) {
+func ReturnHttpCodeAndMessage(httpCode int, code int, data interface{}, msg string, ctx *gin.Context) {
 	ctx.JSON(httpCode, Response{
 		Code: code,
 		Msg:  msg,
@@ -25,34 +31,35 @@ func ReturnResultWithHttpCode(httpCode int, code int, data interface{}, msg inte
 	})
 }
 
-func ReturnResult(code int, data interface{}, msg interface{}, ctx *gin.Context) {
-	ctx.JSON(http.StatusOK, Response{
-		Code: code,
+func BusinessValidationError(msg string, ctx *gin.Context) {
+	ctx.JSON(http.StatusConflict, Response{
+		Code: BusinessValidationErrorCode,
 		Msg:  msg,
-		Data: data,
+		Data: map[string]interface{}{},
 	})
 }
 
-func Success(c *gin.Context) {
-	ReturnResult(Ok, map[string]interface{}{}, "操作成功", c)
+func ValidationError(validationMsg interface{}, ctx *gin.Context) {
+	ctx.JSON(http.StatusBadRequest, Response{
+		Code:          ValidationErrorCode,
+		Msg:           "参数验证失败",
+		ValidationMsg: validationMsg,
+		Data:          map[string]interface{}{},
+	})
 }
 
-func SuccessWithMessage(message interface{}, c *gin.Context) {
-	ReturnResult(Ok, map[string]interface{}{}, message, c)
+func Success(ctx *gin.Context) {
+	SuccessWithDetailed(map[string]interface{}{}, "操作成功", ctx)
 }
 
-func SuccessWithDetailed(data interface{}, message interface{}, c *gin.Context) {
-	ReturnResult(Ok, data, message, c)
+func SuccessWithMessage(msg string, ctx *gin.Context) {
+	SuccessWithDetailed(map[string]interface{}{}, msg, ctx)
 }
 
-func Fail(c *gin.Context) {
-	ReturnResult(BusinessError, map[string]interface{}{}, "操作失败", c)
-}
-
-func FailWithMessage(message interface{}, c *gin.Context) {
-	ReturnResult(BusinessError, map[string]interface{}{}, message, c)
-}
-
-func FailWithDetailed(data interface{}, message interface{}, c *gin.Context) {
-	ReturnResult(BusinessError, data, message, c)
+func SuccessWithDetailed(data interface{}, msg string, ctx *gin.Context) {
+	ctx.JSON(http.StatusOK, Response{
+		Code: Ok,
+		Msg:  msg,
+		Data: data,
+	})
 }

@@ -1,6 +1,10 @@
 package service
 
 import (
+	"errors"
+
+	"gorm.io/gorm"
+
 	"github.com/Dlimingliang/go-admin/core/business"
 	"github.com/Dlimingliang/go-admin/global"
 	"github.com/Dlimingliang/go-admin/model"
@@ -51,11 +55,11 @@ func (menuService *MenuService) CreateMenu(req model.Menu) (model.Menu, error) {
 
 	var menu model.Menu
 	//验证菜单名称重复
-	if err := global.GaDb.Where("name = ?", req.Meta.Name).First(&menu).Error; err != nil {
-		return menu, err
+	res := global.GaDb.Where("name = ?", req.Meta.Name).First(&menu)
+	if res.Error != nil && !errors.Is(res.Error, gorm.ErrRecordNotFound) {
+		return menu, res.Error
 	}
-
-	if &menu != nil {
+	if res.RowsAffected > 0 {
 		return menu, business.New("已存在同名菜单")
 	}
 
@@ -76,11 +80,11 @@ func (menuService *MenuService) UpdateMenu(req model.Menu) error {
 	//判断菜单名称是否重复
 	var dbMenu model.Menu
 	//验证菜单名称重复
-	if err := global.GaDb.Where("id <> ? AND name = ?", req.ID, req.Meta.Name).First(&dbMenu).Error; err != nil {
-		return err
+	res := global.GaDb.Where("id <> ? AND name = ?", req.ID, req.Meta.Name).First(&dbMenu)
+	if res.Error != nil && !errors.Is(res.Error, gorm.ErrRecordNotFound) {
+		return res.Error
 	}
-
-	if &dbMenu != nil {
+	if res.RowsAffected > 0 {
 		return business.New("已存在同名菜单")
 	}
 
@@ -97,9 +101,14 @@ func (menuService *MenuService) UpdateMenu(req model.Menu) error {
 }
 
 func (menuService *MenuService) DeleteMenu(id int) error {
-	if result := global.GaDb.Where("parent_id = ?", id).First(&model.Menu{}); result.RowsAffected > 0 {
+	res := global.GaDb.Where("parent_id = ?", id).First(&model.Menu{})
+	if res.Error != nil && errors.Is(res.Error, gorm.ErrRecordNotFound) {
+		return res.Error
+	}
+	if res.RowsAffected > 0 {
 		return business.New("此菜单存在子菜单不可删除")
 	}
+
 	//删除菜单及关联的角色
 	var menu model.Menu
 	err := global.GaDb.Preload("Roles").Where("id = ?", id).First(&menu).Delete(&menu).Error

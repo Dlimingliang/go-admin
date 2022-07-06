@@ -16,13 +16,13 @@ import (
 func HandlerErr(err error, msg string, ctx *gin.Context) {
 	switch err.(type) {
 	case business.GAValidateError:
-		response.FailWithMessage(err.Error(), ctx)
+		response.BusinessValidationError(err.Error(), ctx)
 	case validator.ValidationErrors:
 		errs, _ := err.(validator.ValidationErrors)
-		response.ReturnResultWithHttpCode(http.StatusBadRequest, response.Ok, map[string]interface{}{}, removeTopStruct(errs.Translate(global.ValidatorTrans)), ctx)
+		response.ValidationError(removeTopStruct(errs.Translate(global.ValidatorTrans)), ctx)
 	default:
 		global.GaLog.Error(msg, zap.Error(err))
-		response.ReturnResultWithHttpCode(http.StatusInternalServerError, response.Ok, map[string]interface{}{}, msg, ctx)
+		response.ReturnHttpCodeAndMessage(http.StatusInternalServerError, response.InternalErrorCode, map[string]interface{}{}, msg, ctx)
 	}
 	return
 }

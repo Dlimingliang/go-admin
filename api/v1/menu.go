@@ -73,7 +73,7 @@ func menuTest(menu *model.Menu) {
 // @Success 200 {object} response.Response{data=response.MenuTree,msg=string} "菜单树信息"
 // @Router /menu/getMenuAuthority [post]
 func (menuApi *MenuApi) GetMenuByRole(ctx *gin.Context) {
-	req := request.GetAuthorityId{}
+	var req request.GetAuthorityId
 	if err := ctx.ShouldBind(&req); err != nil {
 		HandlerErr(err, "数据绑定错误", ctx)
 		return
@@ -103,7 +103,7 @@ func menuByRoleTest(menu *model.Menu) {
 // @Success 200 {object} response.Response{data=response.MenuResult,msg=string} "菜单信息"
 // @Router /menu/getBaseMenuById [post]
 func (menuApi *MenuApi) GetMenuById(ctx *gin.Context) {
-	reqId := request.ById{}
+	var reqId request.ById
 	if err := ctx.ShouldBind(&reqId); err != nil {
 		HandlerErr(err, "数据绑定错误", ctx)
 		return
@@ -126,7 +126,7 @@ func (menuApi *MenuApi) GetMenuById(ctx *gin.Context) {
 // @Success 200 {object} response.Response{data=response.MenuResult} "菜单信息"
 // @Router /menu/addBaseMenu [post]
 func (menuApi *MenuApi) CreateMenu(ctx *gin.Context) {
-	req := request.MenuInfo{}
+	var req request.MenuInfo
 	if err := ctx.ShouldBind(&req); err != nil {
 		HandlerErr(err, "数据绑定错误", ctx)
 		return
@@ -163,7 +163,7 @@ func (menuApi *MenuApi) CreateMenu(ctx *gin.Context) {
 // @Success 200 {object} response.Response{msg=string} "更新角色菜单"
 // @Router /menu/addMenuAuthority [post]
 func (menuApi *MenuApi) AddMenuAuthority(ctx *gin.Context) {
-	req := request.AddMenuAuthorityInfo{}
+	var req request.AddMenuAuthorityInfo
 	if err := ctx.ShouldBind(&req); err != nil {
 		HandlerErr(err, "数据绑定错误", ctx)
 		return
@@ -185,7 +185,7 @@ func (menuApi *MenuApi) AddMenuAuthority(ctx *gin.Context) {
 // @Success 200 {object} response.Response{msg=string} "更新菜单"
 // @Router /menu/updateBaseMenu [post]
 func (menuApi *MenuApi) UpdateMenu(ctx *gin.Context) {
-	req := request.MenuInfo{}
+	var req request.MenuInfo
 	if err := ctx.ShouldBind(&req); err != nil {
 		HandlerErr(err, "数据绑定错误", ctx)
 		return
@@ -223,7 +223,7 @@ func (menuApi *MenuApi) UpdateMenu(ctx *gin.Context) {
 // @Success 200 {object} response.Response{msg=string} "删除菜单"
 // @Router /menu/deleteBaseMenu [post]
 func (menuApi *MenuApi) DeleteMenu(ctx *gin.Context) {
-	reqId := request.ById{}
+	var reqId request.ById
 	if err := ctx.ShouldBind(&reqId); err != nil {
 		HandlerErr(err, "数据绑定错误", ctx)
 		return
