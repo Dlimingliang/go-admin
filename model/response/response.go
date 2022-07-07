@@ -32,8 +32,14 @@ func ReturnHttpCodeAndMessage(httpCode int, code int, data interface{}, msg stri
 }
 
 func BusinessValidationError(msg string, ctx *gin.Context) {
-	ctx.JSON(http.StatusConflict, Response{
-		Code: BusinessValidationErrorCode,
+	//暂时注释，为了前端显示提示
+	//ctx.JSON(http.StatusConflict, Response{
+	//	Code: BusinessValidationErrorCode,
+	//	Msg:  msg,
+	//	Data: map[string]interface{}{},
+	//})
+	ctx.JSON(http.StatusOK, Response{
+		Code: 7,
 		Msg:  msg,
 		Data: map[string]interface{}{},
 	})
