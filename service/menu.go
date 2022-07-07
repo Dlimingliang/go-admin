@@ -102,7 +102,7 @@ func (menuService *MenuService) UpdateMenu(req model.Menu) error {
 
 func (menuService *MenuService) DeleteMenu(id int) error {
 	res := global.GaDb.Where("parent_id = ?", id).First(&model.Menu{})
-	if res.Error != nil && errors.Is(res.Error, gorm.ErrRecordNotFound) {
+	if res.Error != nil && !errors.Is(res.Error, gorm.ErrRecordNotFound) {
 		return res.Error
 	}
 	if res.RowsAffected > 0 {
