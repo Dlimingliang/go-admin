@@ -76,11 +76,17 @@ func (userService *UserService) SetUserAuthorities(id int, authorityIds []string
 }
 
 func (userService *UserService) DeleteUser(id int) error {
-	err := global.GaDb.Delete(&model.User{}, id).Error
-	if err != nil {
-		return err
-	}
-	err = global.GaDb.Delete(&model.UserRole{}, "user_id = ?", id).Error
+
+	err := global.GaDb.Transaction(func(tx *gorm.DB) error {
+		if err := tx.Delete(&model.User{}, id).Error; err != nil {
+			return err
+		}
+
+		if err := tx.Delete(&model.UserRole{}, "user_id = ?", id).Error; err != nil {
+			return err
+		}
+		return nil
+	})
 	return err
 }
 

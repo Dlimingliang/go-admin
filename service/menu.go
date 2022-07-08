@@ -2,7 +2,6 @@ package service
 
 import (
 	"errors"
-
 	"gorm.io/gorm"
 
 	"github.com/Dlimingliang/go-admin/core/business"
@@ -110,10 +109,19 @@ func (menuService *MenuService) DeleteMenu(id int) error {
 	}
 
 	//删除菜单及关联的角色
-	var menu model.Menu
-	err := global.GaDb.Preload("Roles").Where("id = ?", id).First(&menu).Delete(&menu).Error
-	if len(menu.Roles) > 0 {
-		err = global.GaDb.Model(&menu).Association("Roles").Delete(&menu.Roles)
-	}
+	err := global.GaDb.Transaction(func(tx *gorm.DB) error {
+		var menu model.Menu
+		if err := tx.Preload("Roles").Where("id = ?", id).First(&menu).Delete(&menu).Error; err != nil {
+			return err
+		}
+
+		if len(menu.Roles) > 0 {
+			if err := tx.Model(&menu).Association("Roles").Delete(&menu.Roles); err != nil {
+				return err
+			}
+		}
+		return nil
+	})
+
 	return err
 }

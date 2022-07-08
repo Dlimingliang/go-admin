@@ -2,7 +2,6 @@ package service
 
 import (
 	"errors"
-
 	"gorm.io/gorm"
 
 	"github.com/Dlimingliang/go-admin/core/business"
@@ -93,10 +92,18 @@ func (roleService *RoleService) DeleteRole(id string) error {
 	}
 
 	//删除角色
-	var role model.Role
-	err := global.GaDb.Preload("Menus").Where("authority_id = ?", id).First(&role).Delete(&role).Error
-	if len(role.Menus) > 0 {
-		err = global.GaDb.Model(&role).Association("Menus").Delete(&role.Menus)
-	}
+	err := global.GaDb.Transaction(func(tx *gorm.DB) error {
+		var role model.Role
+		if err := tx.Preload("Menus").Where("authority_id = ?", id).First(&role).Delete(&role).Error; err != nil {
+			return err
+		}
+
+		if len(role.Menus) > 0 {
+			if err := tx.Model(&role).Association("Menus").Delete(&role.Menus); err != nil {
+				return err
+			}
+		}
+		return nil
+	})
 	return err
 }
