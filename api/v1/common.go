@@ -2,6 +2,7 @@ package v1
 
 import (
 	"encoding/json"
+	"github.com/go-sql-driver/mysql"
 	"net/http"
 	"strings"
 
@@ -24,6 +25,8 @@ func HandlerErr(err error, msg string, ctx *gin.Context) {
 	case *json.UnmarshalTypeError:
 		errs, _ := err.(*json.UnmarshalTypeError)
 		response.ValidationError(errs.Error(), ctx)
+	case *mysql.MySQLError:
+		response.ReturnHttpCodeAndMessage(http.StatusInternalServerError, response.InternalErrorCode, map[string]interface{}{}, msg, ctx)
 	default:
 		global.GaLog.Error(msg, zap.Error(err))
 		response.ReturnHttpCodeAndMessage(http.StatusInternalServerError, response.InternalErrorCode, map[string]interface{}{}, msg, ctx)
