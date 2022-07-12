@@ -31,4 +31,6 @@ func migrate() {
 	global.GaDb.AutoMigrate(&model.User{})
 	global.GaDb.AutoMigrate(&model.Menu{})
 	global.GaDb.AutoMigrate(&model.Role{})
+	global.GaDb.AutoMigrate(&model.Dictionary{})
+	global.GaDb.AutoMigrate(&model.DictionaryDetail{})
 }

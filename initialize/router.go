@@ -38,5 +38,6 @@ func InitRouters() *gin.Engine {
 	systemRouterGroup.InitMenuRouter(PrivateApiGroup)
 	systemRouterGroup.InitRoleRouter(PrivateApiGroup)
 	systemRouterGroup.InitUserRouter(PrivateApiGroup)
+	systemRouterGroup.InitDictionaryRouter(PrivateApiGroup)
 	return ginRouter
 }

@@ -6,12 +6,14 @@ type ApiGroup struct {
 	UserApi
 	RoleApi
 	MenuApi
+	DictionaryApi
 }
 
 var ApiGroupAPPs = new(ApiGroup)
 
 var (
-	userService = service.GroupApps.UserService
-	menuService = service.GroupApps.MenuService
-	roleService = service.GroupApps.RoleService
+	userService       = service.GroupApps.UserService
+	menuService       = service.GroupApps.MenuService
+	roleService       = service.GroupApps.RoleService
+	dictionaryService = service.GroupApps.DictionaryService
 )
