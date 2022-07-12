@@ -1,4 +1,44 @@
 definitions:
+  model.Dictionary:
+    properties:
+      CreatedAt:
+        type: string
+      ID:
+        type: integer
+      UpdatedAt:
+        type: string
+      desc:
+        type: string
+      dictionaryDetails:
+        items:
+          $ref: '#/definitions/model.DictionaryDetail'
+        type: array
+      name:
+        type: string
+      status:
+        type: boolean
+      type:
+        type: string
+    type: object
+  model.DictionaryDetail:
+    properties:
+      CreatedAt:
+        type: string
+      ID:
+        type: integer
+      UpdatedAt:
+        type: string
+      label:
+        type: string
+      sort:
+        type: integer
+      status:
+        type: boolean
+      sysDictionaryID:
+        type: integer
+      value:
+        type: integer
+    type: object
   model.Menu:
     properties:
       CreatedAt:
@@ -95,6 +135,10 @@ definitions:
         type: integer
       UpdatedAt:
         type: string
+      authorities:
+        items:
+          $ref: '#/definitions/model.Role'
+        type: array
       email:
         type: string
       headerImg:
@@ -127,6 +171,11 @@ definitions:
     type: object
   request.ChangeUserInfo:
     properties:
+      authorityIds:
+        description: 角色ID
+        items:
+          type: string
+        type: array
       email:
         description: 邮件
         type: string
@@ -149,6 +198,70 @@ definitions:
         type: string
     required:
     - authorityId
+    type: object
+  request.DictionaryDetailSearch:
+    properties:
+      CreatedAt:
+        type: string
+      ID:
+        type: integer
+      UpdatedAt:
+        type: string
+      keyword:
+        description: 关键字
+        type: string
+      label:
+        type: string
+      page:
+        description: 页码
+        type: integer
+      pageSize:
+        description: 每页大小
+        type: integer
+      sort:
+        type: integer
+      status:
+        type: boolean
+      sysDictionaryID:
+        type: integer
+      value:
+        type: integer
+    required:
+    - page
+    - pageSize
+    type: object
+  request.DictionarySearch:
+    properties:
+      CreatedAt:
+        type: string
+      ID:
+        type: integer
+      UpdatedAt:
+        type: string
+      desc:
+        type: string
+      dictionaryDetails:
+        items:
+          $ref: '#/definitions/model.DictionaryDetail'
+        type: array
+      keyword:
+        description: 关键字
+        type: string
+      name:
+        type: string
+      page:
+        description: 页码
+        type: integer
+      pageSize:
+        description: 每页大小
+        type: integer
+      status:
+        type: boolean
+      type:
+        type: string
+    required:
+    - page
+    - pageSize
     type: object
   request.GetAuthorityId:
     properties:
@@ -223,6 +336,11 @@ definitions:
     type: object
   request.Register:
     properties:
+      authorityIds:
+        description: 角色ID
+        items:
+          type: string
+        type: array
       email:
         description: 邮件
         type: string
@@ -265,6 +383,16 @@ definitions:
     - authorityName
     - parentId
     type: object
+  request.SetUserAuthorities:
+    properties:
+      ID:
+        type: integer
+      authorityIds:
+        description: 角色ID
+        items:
+          type: string
+        type: array
+    type: object
   response.MenuResult:
     properties:
       menu:
@@ -296,12 +424,15 @@ definitions:
   response.Response:
     properties:
       code:
-        description: 编码
+        description: 编码 本来是string，但是由于已经这么设计了，没办法
         type: integer
       data:
         description: 数据
       msg:
         description: 错误信息
+        type: string
+      validationMsg:
+        description: 参数校验信息
     type: object
   response.RoleResult:
     properties:
@@ -644,6 +775,302 @@ paths:
       summary: 修改菜单
       tags:
       - 菜单相关接口
+  /sysDictionary/createSysDictionary:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 字典信息
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/model.Dictionary'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 字典信息
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  additionalProperties: true
+                  type: object
+                msg:
+                  type: string
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 新增字典
+      tags:
+      - 字典相关接口
+  /sysDictionary/deleteSysDictionary:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: ID
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.ById'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 删除字典
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 删除字典
+      tags:
+      - 字典相关接口
+  /sysDictionary/findSysDictionary:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: ID
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.ById'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 字典信息
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  additionalProperties: true
+                  type: object
+                msg:
+                  type: string
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 根据ID获取字典
+      tags:
+      - 字典相关接口
+  /sysDictionary/getSysDictionaryList:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 页码, 每页大小
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.DictionarySearch'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 分页获取字典列表,返回包括列表,总数,页码,每页数量
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/response.PageResult'
+                msg:
+                  type: string
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 分页获取字典列表
+      tags:
+      - 字典相关接口
+  /sysDictionary/updateSysDictionary:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: 字典信息
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/model.Dictionary'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 更新字典
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 修改字典
+      tags:
+      - 字典相关接口
+  /sysDictionaryDetail/createSysDictionaryDetail:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 字典详细信息
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/model.DictionaryDetail'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 字典详细信息
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  additionalProperties: true
+                  type: object
+                msg:
+                  type: string
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 新增字典详细
+      tags:
+      - 字典详细相关接口
+  /sysDictionaryDetail/deleteSysDictionaryDetail:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: ID
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.ById'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 删除字典详细
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 删除字典详细
+      tags:
+      - 字典详细相关接口
+  /sysDictionaryDetail/findSysDictionaryDetail:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: ID
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.ById'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 字典详细信息
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  additionalProperties: true
+                  type: object
+                msg:
+                  type: string
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 根据ID获取字典详细
+      tags:
+      - 字典详细相关接口
+  /sysDictionaryDetail/getSysDictionaryDetailList:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 页码, 每页大小
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.DictionaryDetailSearch'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 分页获取字典列表,返回包括列表,总数,页码,每页数量
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/response.PageResult'
+                msg:
+                  type: string
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 分页获取字典详细列表
+      tags:
+      - 字典详细相关接口
+  /sysDictionaryDetail/updateSysDictionaryDetail:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: 字典详细信息
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/model.DictionaryDetail'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 更新字典详细
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 修改字典详细
+      tags:
+      - 字典详细相关接口
   /user/admin_register:
     post:
       consumes:
@@ -756,6 +1183,34 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: 重置密码
+      tags:
+      - 用户相关接口
+  /user/setUserAuthorities:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 修改管理员角色
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.SetUserAuthorities'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 修改管理员角色
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 修改管理员角色
       tags:
       - 用户相关接口
   /user/setUserInfo:

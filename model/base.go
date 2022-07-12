@@ -18,7 +18,7 @@ type BaseModel struct {
 	CreateUser int            `json:"-" gorm:"column:create_user;comment:创建人"`
 	UpdateTime time.Time      `json:"UpdatedAt" gorm:"column:update_time;not null;comment:更新时间;autoUpdateTime:milli"`
 	UpdateUser int            `json:"-" gorm:"column:update_user;comment:更新人"`
-	DeletedAt  gorm.DeletedAt `gorm:"index;comment:软删除"`
+	DeletedAt  gorm.DeletedAt `json:"-" gorm:"index;comment:软删除"`
 }
 
 type BaseModelNoDelete struct {

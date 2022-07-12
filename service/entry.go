@@ -5,6 +5,7 @@ type Group struct {
 	RoleService
 	MenuService
 	DictionaryService
+	DictionaryDetailService
 }
 
 var GroupApps = new(Group)

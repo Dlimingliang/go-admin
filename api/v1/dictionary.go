@@ -18,7 +18,7 @@ type DictionaryApi struct{}
 // @Produce application/json
 // @Param data body request.DictionarySearch true "页码, 每页大小"
 // @Success 200 {object} response.Response{data=response.PageResult,msg=string} "分页获取字典列表,返回包括列表,总数,页码,每页数量"
-// @Router /sysDictionary/getSysDictionaryList [post]
+// @Router /sysDictionary/getSysDictionaryList [get]
 func (dictionaryApi *DictionaryApi) GetDictionaryPage(ctx *gin.Context) {
 	var req request.DictionarySearch
 	if err := ctx.ShouldBind(&req); err != nil {

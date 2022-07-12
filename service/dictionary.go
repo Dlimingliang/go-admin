@@ -12,8 +12,8 @@ import (
 
 type DictionaryService struct{}
 
-func (dictionaryService DictionaryService) GetDictionaryPage(req request.DictionarySearch) ([]model.Dictionary, int64, error) {
-	db := global.GaDb.Model(model.User{})
+func (dictionaryService *DictionaryService) GetDictionaryPage(req request.DictionarySearch) ([]model.Dictionary, int64, error) {
+	db := global.GaDb.Model(model.Dictionary{})
 	if req.Name != "" {
 		db = db.Where("`name` LIKE ?", "%"+req.Name+"%")
 	}
@@ -38,7 +38,7 @@ func (dictionaryService DictionaryService) GetDictionaryPage(req request.Diction
 	return dictionaryList, total, err
 }
 
-func (dictionaryService DictionaryService) GetDictionaryById(id int) (model.Dictionary, error) {
+func (dictionaryService *DictionaryService) GetDictionaryById(id int) (model.Dictionary, error) {
 	var dictionary model.Dictionary
 	err := global.GaDb.Where("id = ? and status = ?", id, true).Preload("DictionaryDetails", "status = ?", true).First(&dictionary).Error
 	return dictionary, err
@@ -58,7 +58,7 @@ func (dictionaryService *DictionaryService) CreateDictionary(req model.Dictionar
 	return req, err
 }
 
-func (dictionaryService DictionaryService) UpdateDictionary(req model.Dictionary) error {
+func (dictionaryService *DictionaryService) UpdateDictionary(req model.Dictionary) error {
 	var dictionary model.Dictionary
 	res := global.GaDb.Where("d <> ? AND type = ?", req.ID, req.Type).First(&dictionary)
 	if res.Error != nil && !errors.Is(res.Error, gorm.ErrRecordNotFound) {
@@ -71,7 +71,7 @@ func (dictionaryService DictionaryService) UpdateDictionary(req model.Dictionary
 	return err
 }
 
-func (dictionaryService DictionaryService) DeleteDictionary(id int) error {
+func (dictionaryService *DictionaryService) DeleteDictionary(id int) error {
 	err := global.GaDb.Transaction(func(tx *gorm.DB) error {
 		//删除字典
 		if err := tx.Delete(&model.Dictionary{BaseModel: model.BaseModel{ID: id}}).Error; err != nil {

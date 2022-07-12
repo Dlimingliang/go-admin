@@ -598,6 +598,528 @@ const docTemplate = `{
                 }
             }
         },
+        "/sysDictionary/createSysDictionary": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "字典相关接口"
+                ],
+                "summary": "新增字典",
+                "parameters": [
+                    {
+                        "description": "字典信息",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.Dictionary"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "字典信息",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "additionalProperties": true
+                                        },
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/sysDictionary/deleteSysDictionary": {
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "字典相关接口"
+                ],
+                "summary": "删除字典",
+                "parameters": [
+                    {
+                        "description": "ID",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.ById"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "删除字典",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/sysDictionary/findSysDictionary": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "字典相关接口"
+                ],
+                "summary": "根据ID获取字典",
+                "parameters": [
+                    {
+                        "description": "ID",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.ById"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "字典信息",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "additionalProperties": true
+                                        },
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/sysDictionary/getSysDictionaryList": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "字典相关接口"
+                ],
+                "summary": "分页获取字典列表",
+                "parameters": [
+                    {
+                        "description": "页码, 每页大小",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.DictionarySearch"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "分页获取字典列表,返回包括列表,总数,页码,每页数量",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/response.PageResult"
+                                        },
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/sysDictionary/updateSysDictionary": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "字典相关接口"
+                ],
+                "summary": "修改字典",
+                "parameters": [
+                    {
+                        "description": "字典信息",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.Dictionary"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "更新字典",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/sysDictionaryDetail/createSysDictionaryDetail": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "字典详细相关接口"
+                ],
+                "summary": "新增字典详细",
+                "parameters": [
+                    {
+                        "description": "字典详细信息",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.DictionaryDetail"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "字典详细信息",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "additionalProperties": true
+                                        },
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/sysDictionaryDetail/deleteSysDictionaryDetail": {
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "字典详细相关接口"
+                ],
+                "summary": "删除字典详细",
+                "parameters": [
+                    {
+                        "description": "ID",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.ById"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "删除字典详细",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/sysDictionaryDetail/findSysDictionaryDetail": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "字典详细相关接口"
+                ],
+                "summary": "根据ID获取字典详细",
+                "parameters": [
+                    {
+                        "description": "ID",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.ById"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "字典详细信息",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "additionalProperties": true
+                                        },
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/sysDictionaryDetail/getSysDictionaryDetailList": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "字典详细相关接口"
+                ],
+                "summary": "分页获取字典详细列表",
+                "parameters": [
+                    {
+                        "description": "页码, 每页大小",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.DictionaryDetailSearch"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "分页获取字典列表,返回包括列表,总数,页码,每页数量",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/response.PageResult"
+                                        },
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/sysDictionaryDetail/updateSysDictionaryDetail": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "字典详细相关接口"
+                ],
+                "summary": "修改字典详细",
+                "parameters": [
+                    {
+                        "description": "字典详细信息",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.DictionaryDetail"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "更新字典详细",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/user/admin_register": {
             "post": {
                 "security": [
@@ -801,6 +1323,56 @@ const docTemplate = `{
                 }
             }
         },
+        "/user/setUserAuthorities": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户相关接口"
+                ],
+                "summary": "修改管理员角色",
+                "parameters": [
+                    {
+                        "description": "修改管理员角色",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.SetUserAuthorities"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "修改管理员角色",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/user/setUserInfo": {
             "put": {
                 "security": [
@@ -853,6 +1425,67 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "model.Dictionary": {
+            "type": "object",
+            "properties": {
+                "CreatedAt": {
+                    "type": "string"
+                },
+                "ID": {
+                    "type": "integer"
+                },
+                "UpdatedAt": {
+                    "type": "string"
+                },
+                "desc": {
+                    "type": "string"
+                },
+                "dictionaryDetails": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.DictionaryDetail"
+                    }
+                },
+                "name": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.DictionaryDetail": {
+            "type": "object",
+            "properties": {
+                "CreatedAt": {
+                    "type": "string"
+                },
+                "ID": {
+                    "type": "integer"
+                },
+                "UpdatedAt": {
+                    "type": "string"
+                },
+                "label": {
+                    "type": "string"
+                },
+                "sort": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "boolean"
+                },
+                "sysDictionaryID": {
+                    "type": "integer"
+                },
+                "value": {
+                    "type": "integer"
+                }
+            }
+        },
         "model.Menu": {
             "type": "object",
             "properties": {
@@ -987,6 +1620,12 @@ const docTemplate = `{
                 "UpdatedAt": {
                     "type": "string"
                 },
+                "authorities": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.Role"
+                    }
+                },
                 "email": {
                     "type": "string"
                 },
@@ -1035,6 +1674,13 @@ const docTemplate = `{
         "request.ChangeUserInfo": {
             "type": "object",
             "properties": {
+                "authorityIds": {
+                    "description": "角色ID",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
                 "email": {
                     "description": "邮件",
                     "type": "string"
@@ -1064,6 +1710,99 @@ const docTemplate = `{
             ],
             "properties": {
                 "authorityId": {
+                    "type": "string"
+                }
+            }
+        },
+        "request.DictionaryDetailSearch": {
+            "type": "object",
+            "required": [
+                "page",
+                "pageSize"
+            ],
+            "properties": {
+                "CreatedAt": {
+                    "type": "string"
+                },
+                "ID": {
+                    "type": "integer"
+                },
+                "UpdatedAt": {
+                    "type": "string"
+                },
+                "keyword": {
+                    "description": "关键字",
+                    "type": "string"
+                },
+                "label": {
+                    "type": "string"
+                },
+                "page": {
+                    "description": "页码",
+                    "type": "integer"
+                },
+                "pageSize": {
+                    "description": "每页大小",
+                    "type": "integer"
+                },
+                "sort": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "boolean"
+                },
+                "sysDictionaryID": {
+                    "type": "integer"
+                },
+                "value": {
+                    "type": "integer"
+                }
+            }
+        },
+        "request.DictionarySearch": {
+            "type": "object",
+            "required": [
+                "page",
+                "pageSize"
+            ],
+            "properties": {
+                "CreatedAt": {
+                    "type": "string"
+                },
+                "ID": {
+                    "type": "integer"
+                },
+                "UpdatedAt": {
+                    "type": "string"
+                },
+                "desc": {
+                    "type": "string"
+                },
+                "dictionaryDetails": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.DictionaryDetail"
+                    }
+                },
+                "keyword": {
+                    "description": "关键字",
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "page": {
+                    "description": "页码",
+                    "type": "integer"
+                },
+                "pageSize": {
+                    "description": "每页大小",
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "boolean"
+                },
+                "type": {
                     "type": "string"
                 }
             }
@@ -1168,6 +1907,13 @@ const docTemplate = `{
                 "userName"
             ],
             "properties": {
+                "authorityIds": {
+                    "description": "角色ID",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
                 "email": {
                     "description": "邮件",
                     "type": "string"
@@ -1219,6 +1965,21 @@ const docTemplate = `{
                 }
             }
         },
+        "request.SetUserAuthorities": {
+            "type": "object",
+            "properties": {
+                "ID": {
+                    "type": "integer"
+                },
+                "authorityIds": {
+                    "description": "角色ID",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
         "response.MenuResult": {
             "type": "object",
             "properties": {
@@ -1264,14 +2025,18 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "code": {
-                    "description": "编码",
+                    "description": "编码 本来是string，但是由于已经这么设计了，没办法",
                     "type": "integer"
                 },
                 "data": {
                     "description": "数据"
                 },
                 "msg": {
-                    "description": "错误信息"
+                    "description": "错误信息",
+                    "type": "string"
+                },
+                "validationMsg": {
+                    "description": "参数校验信息"
                 }
             }
         },

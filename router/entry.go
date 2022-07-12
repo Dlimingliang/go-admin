@@ -5,6 +5,7 @@ type Group struct {
 	MenuRouter
 	RoleRouter
 	DictionaryRouter
+	DictionaryDetailRouter
 }
 
 var GroupApps = new(Group)
