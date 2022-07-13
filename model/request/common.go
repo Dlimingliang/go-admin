@@ -7,7 +7,7 @@ type PageInfo struct {
 }
 
 type ById struct {
-	ID int `json:"id" form:"id" binding:"required"` // 主键ID
+	ID int `json:"id" form:"ID" binding:"required"` // 主键ID
 }
 
 type GetAuthorityId struct {

@@ -40,7 +40,7 @@ func (dictionaryService *DictionaryService) GetDictionaryPage(req request.Dictio
 
 func (dictionaryService *DictionaryService) GetDictionaryById(id int) (model.Dictionary, error) {
 	var dictionary model.Dictionary
-	err := global.GaDb.Where("id = ? and status = ?", id, true).Preload("DictionaryDetails", "status = ?", true).First(&dictionary).Error
+	err := global.GaDb.Where("id = ?", id).Preload("DictionaryDetails").First(&dictionary).Error
 	return dictionary, err
 }
 
@@ -60,7 +60,7 @@ func (dictionaryService *DictionaryService) CreateDictionary(req model.Dictionar
 
 func (dictionaryService *DictionaryService) UpdateDictionary(req model.Dictionary) error {
 	var dictionary model.Dictionary
-	res := global.GaDb.Where("d <> ? AND type = ?", req.ID, req.Type).First(&dictionary)
+	res := global.GaDb.Where("id <> ? AND type = ?", req.ID, req.Type).First(&dictionary)
 	if res.Error != nil && !errors.Is(res.Error, gorm.ErrRecordNotFound) {
 		return res.Error
 	}

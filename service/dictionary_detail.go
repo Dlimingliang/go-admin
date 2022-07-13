@@ -11,7 +11,7 @@ type DictionaryDetailService struct{}
 func (dictionaryDetailService *DictionaryDetailService) GetDictionaryDetailPage(req request.DictionaryDetailSearch) ([]model.DictionaryDetail, int64, error) {
 	db := global.GaDb.Model(model.DictionaryDetail{})
 	if req.Label != "" {
-		db = db.Where("`name` LIKE ?", "%"+req.Label+"%")
+		db = db.Where("`label` LIKE ?", "%"+req.Label+"%")
 	}
 	if req.Value != 0 {
 		db = db.Where("value = ?", req.Value)
@@ -20,7 +20,7 @@ func (dictionaryDetailService *DictionaryDetailService) GetDictionaryDetailPage(
 		db = db.Where("`status` = ?", req.Status)
 	}
 	if req.DictionaryID != 0 {
-		db = db.Where("sys_dictionary_id = ?", req.DictionaryID)
+		db = db.Where("dictionary_id = ?", req.DictionaryID)
 	}
 
 	var total int64
