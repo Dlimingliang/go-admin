@@ -1,4 +1,4 @@
-package router
+package routers
 
 import (
 	"github.com/gin-gonic/gin"
@@ -9,7 +9,7 @@ import (
 type UserRouter struct{}
 
 func (userRouter *UserRouter) InitUserRouter(group *gin.RouterGroup) {
-	userApi := v1.ApiGroupAPPs.UserApi
+	userApi := v1.ApiGroupAPP.UserApi
 	userGroup := group.Group("user")
 	{
 		userGroup.POST("admin_register", userApi.RegisterAdmin)          //注册管理员

@@ -1,5 +1,12 @@
 package request
 
+type Login struct {
+	Username  string `json:"userName" binding:"required"`  //用户名
+	Password  string `json:"password" binding:"required"`  //密码
+	Captcha   string `json:"captcha" binding:"required"`   // 验证码
+	CaptchaId string `json:"captchaId" binding:"required"` // 验证码ID
+}
+
 type Register struct {
 	Username     string   `json:"userName" binding:"required,min=1,max=50"` //用户名
 	Password     string   `json:"password" binding:"required,min=6,max=16"` //密码

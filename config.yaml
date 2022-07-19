@@ -1,7 +1,16 @@
+# system configuration
 system:
   server-name: go-admin
   server-port: 9999
 
+# jwt configuration
+jwt:
+  signing-key: 'qmPlus'
+  expires-time: 604800
+  buffer-time: 86400
+  issuer: 'qmPlus'
+
+# mysql configuration
 mysql:
   host: 127.0.0.1
   port: 3306
@@ -13,6 +22,13 @@ mysql:
   max-idle-conn: 10
   max-open-conn: 100
 
+# redis config
+redis:
+  db: 0
+  addr: 127.0.0.1:6379
+  password: ""
+
+# zap logger configuration
 zap:
   level: debug
   prefix: '[github.com/Dlimingliang/go-admin]'
@@ -25,3 +41,9 @@ zap:
   max-size: 5 #单个日志大小 单位M
   max-backups: 10 #最大日志数量
   log-in-file: false #开发环境可不打印
+
+# 验证码配置
+captcha:
+  key-long: 6
+  img-width: 240
+  img-height: 80

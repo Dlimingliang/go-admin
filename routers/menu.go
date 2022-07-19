@@ -1,4 +1,4 @@
-package router
+package routers
 
 import (
 	"github.com/gin-gonic/gin"
@@ -9,7 +9,7 @@ import (
 type MenuRouter struct{}
 
 func (menuRouter *MenuRouter) InitMenuRouter(group *gin.RouterGroup) {
-	menuApi := v1.ApiGroupAPPs.MenuApi
+	menuApi := v1.ApiGroupAPP.MenuApi
 	menuGroup := group.Group("menu")
 	{
 		menuGroup.POST("addBaseMenu", menuApi.CreateMenu)            //新建菜单

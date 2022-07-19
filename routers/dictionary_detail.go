@@ -1,4 +1,4 @@
-package router
+package routers
 
 import (
 	"github.com/gin-gonic/gin"
@@ -9,7 +9,7 @@ import (
 type DictionaryDetailRouter struct{}
 
 func (dictionaryDetailRouter *DictionaryDetailRouter) InitDictionaryDetailRouter(group *gin.RouterGroup) {
-	dictionaryDetailApi := v1.ApiGroupAPPs.DictionaryDetailApi
+	dictionaryDetailApi := v1.ApiGroupAPP.DictionaryDetailApi
 	dictionaryGroup := group.Group("sysDictionaryDetail")
 	{
 		dictionaryGroup.POST("createSysDictionaryDetail", dictionaryDetailApi.CreateDictionaryDetail)

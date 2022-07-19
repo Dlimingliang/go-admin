@@ -1,4 +1,4 @@
-package service
+package services
 
 import (
 	"errors"
@@ -24,6 +24,23 @@ func (userService *UserService) GetUserList(page request.PageInfo) ([]model.User
 	var userList []model.User
 	err = db.Scopes(Paginate(page.Page, page.PageSize)).Preload("Roles").Find(&userList).Error
 	return userList, total, err
+}
+
+func (userService UserService) Login(req model.User) (model.User, error) {
+	var user model.User
+	err := global.GaDb.Where("username = ?", req.Username).Preload("Roles").First(&user).Error
+	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
+		return user, err
+	}
+
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return user, business.New("用户不存在")
+	}
+
+	if ok := utils.CheckPassword(req.Password, user.Password); !ok {
+		return user, business.New("密码错误")
+	}
+	return user, err
 }
 
 func (userService *UserService) RegisterAdmin(req model.User) (model.User, error) {

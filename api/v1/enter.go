@@ -1,8 +1,9 @@
 package v1
 
-import "github.com/Dlimingliang/go-admin/service"
+import "github.com/Dlimingliang/go-admin/services"
 
 type ApiGroup struct {
+	BaseApi
 	UserApi
 	RoleApi
 	MenuApi
@@ -10,12 +11,13 @@ type ApiGroup struct {
 	DictionaryDetailApi
 }
 
-var ApiGroupAPPs = new(ApiGroup)
+var ApiGroupAPP = new(ApiGroup)
 
 var (
-	userService             = service.GroupApps.UserService
-	menuService             = service.GroupApps.MenuService
-	roleService             = service.GroupApps.RoleService
-	dictionaryService       = service.GroupApps.DictionaryService
-	dictionaryDetailService = service.GroupApps.DictionaryDetailService
+	userService             = services.ServiceGroupApp.UserService
+	menuService             = services.ServiceGroupApp.MenuService
+	roleService             = services.ServiceGroupApp.RoleService
+	dictionaryService       = services.ServiceGroupApp.DictionaryService
+	dictionaryDetailService = services.ServiceGroupApp.DictionaryDetailService
+	jwtService              = services.ServiceGroupApp.JwtService
 )

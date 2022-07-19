@@ -1,4 +1,4 @@
-package service
+package services
 
 type Group struct {
 	UserService
@@ -6,6 +6,7 @@ type Group struct {
 	MenuService
 	DictionaryService
 	DictionaryDetailService
+	JwtService
 }
 
-var GroupApps = new(Group)
+var ServiceGroupApp = new(Group)

@@ -1,6 +1,7 @@
-package router
+package routers
 
 type Group struct {
+	BaseRouter
 	UserRouter
 	MenuRouter
 	RoleRouter
@@ -8,4 +9,4 @@ type Group struct {
 	DictionaryDetailRouter
 }
 
-var GroupApps = new(Group)
+var RouterGroupApp = new(Group)

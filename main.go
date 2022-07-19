@@ -18,9 +18,10 @@ func main() {
 	initialize.InitViper()
 	initialize.InitZap()
 	initialize.InitGorm()
+	initialize.InitRedis()
 	ginRouter := initialize.InitRouters()
 	initialize.InitValidator()
-	migrate()
+	//migrate()
 
 	if err := ginRouter.Run(fmt.Sprintf(":%d", global.ServerConfig.SystemConfig.ServerPort)); err != nil {
 		global.GaLog.Panic(err.Error())

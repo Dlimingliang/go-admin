@@ -1,6 +1,7 @@
 package initialize
 
 import (
+	"github.com/Dlimingliang/go-admin/middleware"
 	"time"
 
 	"github.com/gin-contrib/cors"
@@ -9,7 +10,7 @@ import (
 	"github.com/swaggo/gin-swagger/swaggerFiles"
 
 	_ "github.com/Dlimingliang/go-admin/docs"
-	"github.com/Dlimingliang/go-admin/router"
+	"github.com/Dlimingliang/go-admin/routers"
 )
 
 func InitRouters() *gin.Engine {
@@ -31,10 +32,14 @@ func InitRouters() *gin.Engine {
 		MaxAge:           12 * time.Hour,
 	}))
 
-	systemRouterGroup := router.GroupApps
-	//PublicApiGroup := ginRouter.Group("")
+	systemRouterGroup := routers.RouterGroupApp
+	PublicApiGroup := ginRouter.Group("")
+	{
+		systemRouterGroup.BaseRouter.InitBaseRouter(PublicApiGroup)
+	}
 
 	PrivateApiGroup := ginRouter.Group("")
+	PrivateApiGroup.Use(middleware.JWTAuth())
 	systemRouterGroup.InitMenuRouter(PrivateApiGroup)
 	systemRouterGroup.InitRoleRouter(PrivateApiGroup)
 	systemRouterGroup.InitUserRouter(PrivateApiGroup)

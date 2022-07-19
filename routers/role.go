@@ -1,4 +1,4 @@
-package router
+package routers
 
 import (
 	"github.com/gin-gonic/gin"
@@ -9,7 +9,7 @@ import (
 type RoleRouter struct{}
 
 func (roleRouter *RoleRouter) InitRoleRouter(group *gin.RouterGroup) {
-	roleApi := v1.ApiGroupAPPs.RoleApi
+	roleApi := v1.ApiGroupAPP.RoleApi
 	roleGroup := group.Group("authority")
 	{
 		roleGroup.POST("createAuthority", roleApi.CreateRole)
