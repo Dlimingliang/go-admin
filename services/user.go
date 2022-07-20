@@ -40,6 +40,7 @@ func (userService UserService) Login(req model.User) (model.User, error) {
 	if ok := utils.CheckPassword(req.Password, user.Password); !ok {
 		return user, business.New("密码错误")
 	}
+	user.CurrentRole = user.Roles[0]
 	return user, err
 }
 
