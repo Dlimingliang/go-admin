@@ -19,6 +19,7 @@ func (menuRouter *MenuRouter) InitMenuRouter(group *gin.RouterGroup) {
 	}
 	menuGroupWithoutRecord := group.Group("menu")
 	{
+		menuGroupWithoutRecord.POST("getMenu", menuApi.GetMenuTree)            //根据角色获取菜单树，暂时没做
 		menuGroupWithoutRecord.POST("getMenuList", menuApi.GetMenuList)        //分页获取菜单列表
 		menuGroupWithoutRecord.POST("getBaseMenuTree", menuApi.GetMenuTree)    //获取菜单树
 		menuGroupWithoutRecord.POST("getBaseMenuById", menuApi.GetMenuById)    //根据id获取菜单信息
