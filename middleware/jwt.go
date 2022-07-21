@@ -38,8 +38,8 @@ func JWTAuth() gin.HandlerFunc {
 			ctx.Header("new-token", newToken)
 			ctx.Header("new-expires-at", strconv.FormatInt(newClaims.ExpiresAt.Unix(), 10))
 			jwtService.SetRedisJwt(newToken, newClaims.UserName)
-			ctx.Set("claims", claims)
-			ctx.Next()
 		}
+		ctx.Set("claims", claims)
+		ctx.Next()
 	}
 }

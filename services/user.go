@@ -26,7 +26,16 @@ func (userService *UserService) GetUserList(page request.PageInfo) ([]model.User
 	return userList, total, err
 }
 
-func (userService UserService) Login(req model.User) (model.User, error) {
+func (userService UserService) GetUserInfo(id int) (model.User, error) {
+	var user model.User
+	err := global.GaDb.Where("id = ?", id).Preload("Roles").First(&user).Error
+	if err != nil {
+		return user, err
+	}
+	return user, err
+}
+
+func (userService *UserService) Login(req model.User) (model.User, error) {
 	var user model.User
 	err := global.GaDb.Where("username = ?", req.Username).Preload("Roles").First(&user).Error
 	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {

@@ -45,7 +45,7 @@ func (baseApi *BaseApi) Login(ctx *gin.Context) {
 func (baseApi *BaseApi) GenerateToken(ctx *gin.Context, user model.User) {
 	j := utils.NewJWT()
 	claims := j.CreateClaims(request.BaseClaims{
-		ID:       user.ID,
+		Id:       user.ID,
 		UserName: user.Username,
 		NickName: user.NickName,
 	})

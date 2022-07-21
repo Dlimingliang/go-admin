@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"github.com/Dlimingliang/go-admin/utils"
 	"github.com/gin-gonic/gin"
 
 	"github.com/Dlimingliang/go-admin/model"
@@ -36,6 +37,23 @@ func (userApi *UserApi) GetUserList(ctx *gin.Context) {
 			Page:     pageInfo.Page,
 			PageSize: pageInfo.PageSize,
 		}, "获取成功", ctx)
+	}
+}
+
+// GetUserInfo
+// @Tags SysUser
+// @Summary 获取用户信息
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Success 200 {object} response.Response{data=map[string]interface{},msg=string} "获取用户信息"
+// @Router /user/getUserInfo [get]
+func (userApi *UserApi) GetUserInfo(ctx *gin.Context) {
+	userId := utils.GetUserId(ctx)
+	if user, err := userService.GetUserInfo(userId); err != nil {
+		HandlerErr(err, "获取失败", ctx)
+	} else {
+		response.SuccessWithDetailed(gin.H{"userInfo": user}, "获取成功", ctx)
 	}
 }
 

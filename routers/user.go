@@ -22,5 +22,6 @@ func (userRouter *UserRouter) InitUserRouter(group *gin.RouterGroup) {
 	userGroupWithoutRecord := group.Group("user")
 	{
 		userGroupWithoutRecord.POST("getUserList", userApi.GetUserList) //分页获取用户列表
+		userGroupWithoutRecord.GET("getUserInfo", userApi.GetUserInfo)  //获取登录用户信息
 	}
 }
