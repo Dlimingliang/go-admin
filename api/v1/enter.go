@@ -9,6 +9,7 @@ type ApiGroup struct {
 	MenuApi
 	DictionaryApi
 	DictionaryDetailApi
+	OperationRecordApi
 }
 
 var ApiGroupAPP = new(ApiGroup)
@@ -20,4 +21,5 @@ var (
 	dictionaryService       = services.ServiceGroupApp.DictionaryService
 	dictionaryDetailService = services.ServiceGroupApp.DictionaryDetailService
 	jwtService              = services.ServiceGroupApp.JwtService
+	operationRecordService  = services.ServiceGroupApp.OperationRecordService
 )

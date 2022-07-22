@@ -1,6 +1,7 @@
 package routers
 
 import (
+	"github.com/Dlimingliang/go-admin/middleware"
 	"github.com/gin-gonic/gin"
 
 	v1 "github.com/Dlimingliang/go-admin/api/v1"
@@ -10,7 +11,7 @@ type DictionaryRouter struct{}
 
 func (dictionaryRouter *DictionaryRouter) InitDictionaryRouter(group *gin.RouterGroup) {
 	dictionaryApi := v1.ApiGroupAPP.DictionaryApi
-	dictionaryGroup := group.Group("sysDictionary")
+	dictionaryGroup := group.Group("sysDictionary").Use(middleware.OperationRecord())
 	{
 		dictionaryGroup.POST("createSysDictionary", dictionaryApi.CreateDictionary)
 		dictionaryGroup.DELETE("deleteSysDictionary", dictionaryApi.DeleteDictionary)

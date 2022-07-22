@@ -1,6 +1,7 @@
 package routers
 
 import (
+	"github.com/Dlimingliang/go-admin/middleware"
 	"github.com/gin-gonic/gin"
 
 	v1 "github.com/Dlimingliang/go-admin/api/v1"
@@ -10,7 +11,7 @@ type MenuRouter struct{}
 
 func (menuRouter *MenuRouter) InitMenuRouter(group *gin.RouterGroup) {
 	menuApi := v1.ApiGroupAPP.MenuApi
-	menuGroup := group.Group("menu")
+	menuGroup := group.Group("menu").Use(middleware.OperationRecord())
 	{
 		menuGroup.POST("addBaseMenu", menuApi.CreateMenu)            //新建菜单
 		menuGroup.POST("updateBaseMenu", menuApi.UpdateMenu)         //修改菜单

@@ -7,6 +7,7 @@ type Group struct {
 	DictionaryService
 	DictionaryDetailService
 	JwtService
+	OperationRecordService
 }
 
 var ServiceGroupApp = new(Group)

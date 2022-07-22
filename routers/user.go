@@ -1,6 +1,7 @@
 package routers
 
 import (
+	"github.com/Dlimingliang/go-admin/middleware"
 	"github.com/gin-gonic/gin"
 
 	v1 "github.com/Dlimingliang/go-admin/api/v1"
@@ -10,7 +11,7 @@ type UserRouter struct{}
 
 func (userRouter *UserRouter) InitUserRouter(group *gin.RouterGroup) {
 	userApi := v1.ApiGroupAPP.UserApi
-	userGroup := group.Group("user")
+	userGroup := group.Group("user").Use(middleware.OperationRecord())
 	{
 		userGroup.POST("admin_register", userApi.RegisterAdmin)          //注册管理员
 		userGroup.PUT("setUserInfo", userApi.SetUserInfo)                //设置用户信息

@@ -1,7 +1,6 @@
 package initialize
 
 import (
-	"github.com/Dlimingliang/go-admin/middleware"
 	"time"
 
 	"github.com/gin-contrib/cors"
@@ -10,6 +9,7 @@ import (
 	"github.com/swaggo/gin-swagger/swaggerFiles"
 
 	_ "github.com/Dlimingliang/go-admin/docs"
+	"github.com/Dlimingliang/go-admin/middleware"
 	"github.com/Dlimingliang/go-admin/routers"
 )
 
@@ -45,5 +45,6 @@ func InitRouters() *gin.Engine {
 	systemRouterGroup.InitUserRouter(PrivateApiGroup)
 	systemRouterGroup.InitDictionaryRouter(PrivateApiGroup)
 	systemRouterGroup.InitDictionaryDetailRouter(PrivateApiGroup)
+	systemRouterGroup.InitOperationRecordRouter(PrivateApiGroup)
 	return ginRouter
 }

@@ -7,6 +7,7 @@ type Group struct {
 	RoleRouter
 	DictionaryRouter
 	DictionaryDetailRouter
+	OperationRecordRouter
 }
 
 var RouterGroupApp = new(Group)
