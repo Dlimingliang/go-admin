@@ -1,9 +1,11 @@
 package initialize
 
 import (
+	"github.com/Dlimingliang/go-admin/global"
 	"time"
 
 	"github.com/gin-contrib/cors"
+	ginzap "github.com/gin-contrib/zap"
 	"github.com/gin-gonic/gin"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
@@ -14,7 +16,9 @@ import (
 )
 
 func InitRouters() *gin.Engine {
-	ginRouter := gin.Default()
+	gin.Default()
+	ginRouter := gin.New()
+	ginRouter.Use(ginzap.Ginzap(global.GaLog, time.RFC3339, true), ginzap.RecoveryWithZap(global.GaLog, true), gin.Recovery())
 	//设置swagger
 	ginRouter.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	//通过环境变量禁用swagger
