@@ -28,7 +28,7 @@ func (operationRecordService *OperationRecordService) GetOperationRecordPage(req
 	}
 
 	var operationRecordList []model.OperationRecord
-	err = db.Order("id desc").Scopes(Paginate(req.Page, req.PageSize)).Preload("Usser").Find(&operationRecordList).Error
+	err = db.Order("id desc").Scopes(Paginate(req.Page, req.PageSize)).Preload("User").Find(&operationRecordList).Error
 	return operationRecordList, total, err
 }
 

@@ -6,6 +6,7 @@ import (
 	"github.com/Dlimingliang/go-admin/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v4"
+	"net/http"
 	"strconv"
 	"time"
 
@@ -18,7 +19,7 @@ func JWTAuth() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		token := ctx.Request.Header.Get("x-token")
 		if token == "" {
-			response.BusinessValidationError("未登录,请去登录", ctx)
+			response.ReturnHttpCodeAndMessage(http.StatusOK, 7, gin.H{"reload": true}, "未登录,请去登录", ctx)
 			ctx.Abort()
 			return
 		}
@@ -26,7 +27,7 @@ func JWTAuth() gin.HandlerFunc {
 		j := utils.NewJWT()
 		claims, err := j.ParseToken(token)
 		if err != nil {
-			response.BusinessValidationError(err.Error(), ctx)
+			response.ReturnHttpCodeAndMessage(http.StatusOK, 7, gin.H{"reload": true}, err.Error(), ctx)
 			ctx.Abort()
 			return
 		}

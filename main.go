@@ -63,4 +63,5 @@ func migrate() {
 	global.GaDb.AutoMigrate(&model.Role{})
 	global.GaDb.AutoMigrate(&model.Dictionary{})
 	global.GaDb.AutoMigrate(&model.DictionaryDetail{})
+	global.GaDb.AutoMigrate(&model.OperationRecord{})
 }
