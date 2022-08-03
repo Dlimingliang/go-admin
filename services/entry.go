@@ -8,6 +8,8 @@ type Group struct {
 	DictionaryDetailService
 	JwtService
 	OperationRecordService
+	SysApiService
+	CasbinService
 }
 
 var ServiceGroupApp = new(Group)

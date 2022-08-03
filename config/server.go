@@ -7,4 +7,5 @@ type Server struct {
 	JWTConfig     JWT     `mapstructure:"jwt"`
 	RedisConfig   Redis   `mapstructure:"redis"`
 	CaptchaConfig Captcha `mapstructure:"captcha"`
+	CasbinConfig  Casbin  `mapstructure:"casbin"`
 }

@@ -47,3 +47,7 @@ captcha:
   key-long: 6
   img-width: 240
   img-height: 80
+
+# casbin配置
+casbin:
+  model-path: casbin_rbac_model.conf

@@ -8,6 +8,8 @@ type Group struct {
 	DictionaryRouter
 	DictionaryDetailRouter
 	OperationRecordRouter
+	SysApiRouter
+	CasbinRouter
 }
 
 var RouterGroupApp = new(Group)

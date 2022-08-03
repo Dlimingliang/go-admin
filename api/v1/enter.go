@@ -10,6 +10,8 @@ type ApiGroup struct {
 	DictionaryApi
 	DictionaryDetailApi
 	OperationRecordApi
+	SysApiApi
+	CasbinApi
 }
 
 var ApiGroupAPP = new(ApiGroup)
@@ -22,4 +24,6 @@ var (
 	dictionaryDetailService = services.ServiceGroupApp.DictionaryDetailService
 	jwtService              = services.ServiceGroupApp.JwtService
 	operationRecordService  = services.ServiceGroupApp.OperationRecordService
+	sysApiService           = services.ServiceGroupApp.SysApiService
+	casbinService           = services.ServiceGroupApp.CasbinService
 )
