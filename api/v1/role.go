@@ -55,6 +55,7 @@ func (roleApi *RoleApi) CreateRole(ctx *gin.Context) {
 	if role, err := roleService.CreateRole(createRole); err != nil {
 		HandlerErr(err, "创建失败", ctx)
 	} else {
+		_ = casbinService.UpdateCasbin(role.AuthorityId, request.DefaultCasbin())
 		response.SuccessWithDetailed(response.RoleResult{Authority: role}, "创建成功", ctx)
 	}
 }

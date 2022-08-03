@@ -105,5 +105,6 @@ func (roleService *RoleService) DeleteRole(id string) error {
 		}
 		return nil
 	})
+	CasbinServiceApp.ClearCasbin(0, id)
 	return err
 }

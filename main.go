@@ -29,7 +29,7 @@ func main() {
 	initialize.InitRedis()
 	ginRouter := initialize.InitRouters()
 	initialize.InitValidator()
-	//migrate()
+	migrate()
 
 	//启动服务
 	address := fmt.Sprintf(":%d", global.ServerConfig.SystemConfig.ServerPort)
@@ -58,10 +58,6 @@ func main() {
 }
 
 func migrate() {
-	global.GaDb.AutoMigrate(&model.User{})
-	global.GaDb.AutoMigrate(&model.Menu{})
-	global.GaDb.AutoMigrate(&model.Role{})
-	global.GaDb.AutoMigrate(&model.Dictionary{})
-	global.GaDb.AutoMigrate(&model.DictionaryDetail{})
-	global.GaDb.AutoMigrate(&model.OperationRecord{})
+	_ = global.GaDb.AutoMigrate(&model.User{}, &model.Menu{}, &model.Role{}, &model.Dictionary{},
+		&model.DictionaryDetail{}, &model.OperationRecord{}, &model.SysApi{})
 }
